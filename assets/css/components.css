@@ -79,13 +79,17 @@
 }
 
 .btn-primary {
-  background: var(--color-signal-blue);
-  color: var(--color-white);
+  background: var(--brand-blue-600);
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-display);
+  font-weight: 700;
 }
 
 .btn-primary:hover {
-  color: var(--color-white);
-  background: var(--color-blue-dark);
+  color: #ffffff;
+  background: var(--brand-blue-700);
 }
 
 .btn-secondary {
@@ -210,14 +214,16 @@
 }
 
 .list-link {
-  color: var(--color-white);
+  display: block;
+  color: #ffffff;
   text-decoration: none;
+  padding: var(--space-1) 0;
 }
 
 .signature {
   margin-top: var(--space-2);
-  font-family: var(--font-meta);
-  color: var(--color-spark-amber-text);
+  font-family: var(--font-mono);
+  color: var(--gray-400);
 }
 
 .mt-3 {

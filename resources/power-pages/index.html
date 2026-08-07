@@ -29,16 +29,38 @@
           <strong>Jonathan Manrique Ríos</strong>
           <span>Connector de ideas</span>
         </a>
-        <button id="menuToggle" class="menu-toggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
+
+        <button id="menuToggle" class="menu-toggle" aria-expanded="false" aria-controls="navLinks">
+          Menu
+        </button>
+
         <div id="navLinks" class="nav-links" data-open="false">
           <a href="../../index.html">Home</a>
-          <a href="../index.html" aria-current="page">Resources</a>
+
+          <div class="nav-item nav-item--dropdown">
+            <button class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="resourcesMenu" aria-current="page">
+              Resources
+            </button>
+            <div id="resourcesMenu" class="nav-dropdown-panel" data-open="false">
+            <a href="../../resources/pcf/index.html">PCF Controls</a>
+            <a href="../../resources/code-apps/index.html">Code Apps</a>
+            <a href="../../resources/power-pages/index.html" aria-current="page">Power Pages SPA</a>
+            <a href="../../resources/plugins/index.html">Dataverse Plugins</a>
+            <a href="../../resources/components/index.html">Power Platform Components</a>
+            </div>
+          </div>
+
           <a href="../../tutorials/index.html">Tutorials</a>
           <a href="../../architecture/index.html">Architecture</a>
           <a href="../../speaking/index.html">Speaking</a>
           <a href="../../about/index.html">About</a>
-          <a href="https://github.com/jmanriquerios1" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
+
+        <div class="nav-search">
+          <input type="search" placeholder="Search resources..." aria-label="Search resources">
+        </div>
+
+        <a class="btn btn-primary" href="../../speaking/index.html">Speaking</a>
       </nav>
     </header>
 
@@ -68,9 +90,32 @@
     </main>
 
     <footer class="footer">
-      <div class="footer-wrap">
-        <h2>Jonathan Manrique Ríos</h2>
-        <p class="signature">// ideas que funcionan en producción, no en demos</p>
+      <div class="footer-wrap footer-grid">
+        <div class="footer-col footer-col--brand">
+          <h2>Jonathan Manrique Ríos</h2>
+          <p>Connector de ideas</p>
+          <p>Power Platform Architect · Community Speaker</p>
+          <p class="signature">// ideas que funcionan en producción, no en demos</p>
+        </div>
+
+        <div class="footer-col">
+          <h3>Resources</h3>
+          <a class="list-link" href="../../resources/index.html">All resources</a>
+          <a class="list-link" href="../../tutorials/index.html">Tutorials</a>
+          <a class="list-link" href="../../architecture/index.html">Architecture</a>
+        </div>
+
+        <div class="footer-col">
+          <h3>Community</h3>
+          <a class="list-link" href="../../speaking/index.html">Speaking</a>
+          <a class="list-link" href="../../about/index.html">About</a>
+        </div>
+
+        <div class="footer-col">
+          <h3>Social</h3>
+          <a class="list-link" href="https://github.com/jmanriquerios1" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="list-link" href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
       </div>
     </footer>
 

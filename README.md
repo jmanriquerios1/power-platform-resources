@@ -27,12 +27,11 @@ It is the central entry point for:
 
 The portal uses custom brand tokens in `assets/css/tokens.css`:
 
-- Slate `#1c2333`
-- Signal Blue `#2563eb`
-- Spark Amber `#f59e0b` (controlled accent)
-- Ivory `#f8f7f4`
-- Blue 10 `#dbeafe`
-- Muted `#6b7280`
+- Ink scale (`--ink-900`, `--ink-800`, `--ink-700`)
+- Gray scale (`--gray-50`, `--gray-200`, `--gray-400`, `--gray-500`)
+- Brand blue (`--brand-blue-600`, `--brand-blue-700`, `--brand-blue-100`)
+- Accent gold (`--accent-gold-600`, `--accent-gold-100`)
+- Semantic (`--success-600`, `--danger-600`)
 
 Typography:
 
