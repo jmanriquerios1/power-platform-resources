@@ -1,4 +1,4 @@
-# Jonathan Belenguer Developer Portal
+# Jonathan Manrique Ríos Developer Portal
 
 Open-source Power Platform portal for developers, consultants and architects.
 
