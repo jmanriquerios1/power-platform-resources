@@ -9,19 +9,22 @@ const outputPath = path.resolve(
   repositoryRoot,
   process.env.RESOURCES_OUTPUT_PATH || "assets/data/resources.json"
 );
-const owner = process.env.GITHUB_OWNER || "jmanriquerios1";
-const apiBaseUrl = (process.env.GITHUB_API_BASE_URL || "https://api.github.com").replace(/\/$/, "");
-const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
 
-const primaryCategories = [
-  { key: "pcf", label: "PCF Controls", topic: "pcf", route: "pcf" },
-  { key: "code-apps", label: "Code Apps", topic: "code-app", route: "code-apps" },
-  { key: "power-pages", label: "Power Pages SPA", topic: "power-pages-spa", route: "power-pages" },
-  { key: "plugins", label: "Dataverse Plugins", topic: "dataverse-plugin", route: "plugins" },
-  { key: "components", label: "Power Platform Components", topic: "power-platform-component", route: "components" }
+const categoryDefinitions = [
+  { sourceDir: "pcf", key: "pcf", label: "PCF Controls", topic: "pcf", route: "pcf" },
+  { sourceDir: "code-apps", key: "code-apps", label: "Code Apps", topic: "code-app", route: "code-apps" },
+  { sourceDir: "power-pages-spa", key: "power-pages", label: "Power Pages SPA", topic: "power-pages-spa", route: "power-pages" },
+  { sourceDir: "plugins", key: "plugins", label: "Dataverse Plugins", topic: "dataverse-plugin", route: "plugins" },
+  { sourceDir: "components", key: "components", label: "Power Platform Components", topic: "power-platform-component", route: "components" }
 ];
 
-const primaryTopicLookup = new Map(primaryCategories.map((category) => [category.topic, category]));
+const supportedReadmeNames = ["README.md", "Readme.md", "readme.md"];
+const imageExtensions = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg"]);
+const previewNameHints = ["preview", "screenshot", "cover", "thumbnail", "thumb", "image", "demo", "sample", "logo"];
+
+function toPosix(relativePath) {
+  return relativePath.split(path.sep).join("/");
+}
 
 function slugify(value) {
   return String(value || "")
@@ -31,103 +34,172 @@ function slugify(value) {
     .replace(/^-+|-+$/g, "");
 }
 
-async function githubRequest(endpoint, { allow404 = false } = {}) {
-  const response = await fetch(`${apiBaseUrl}${endpoint}`, {
-    headers: {
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      "User-Agent": "power-platform-resources-catalog-generator",
-      ...(token ? { Authorization: ["Bearer", token].join(" ") } : {})
+function humanizeSlug(value) {
+  return String(value || "")
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function stripFrontMatter(content) {
+  const normalized = String(content || "");
+  if (!normalized.startsWith("---\n")) {
+    return normalized;
+  }
+
+  const closingFenceIndex = normalized.indexOf("\n---\n", 4);
+  if (closingFenceIndex === -1) {
+    return normalized;
+  }
+
+  return normalized.slice(closingFenceIndex + 5);
+}
+
+function normalizeMarkdownText(value) {
+  return String(value || "")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/[`*_~>#]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractTitle(readmeContent, fallbackTitle) {
+  const content = stripFrontMatter(readmeContent);
+  const headingMatch = content.match(/^#\s+(.+)$/m);
+  if (headingMatch) {
+    const candidate = normalizeMarkdownText(headingMatch[1]);
+    if (candidate) return candidate;
+  }
+
+  return fallbackTitle;
+}
+
+function extractDescription(readmeContent) {
+  const content = stripFrontMatter(readmeContent);
+  const lines = content.split(/\r?\n/);
+  const paragraph = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      if (paragraph.length) break;
+      continue;
     }
+
+    if (
+      /^#{1,6}\s/.test(trimmed) ||
+      /^```/.test(trimmed) ||
+      /^>/.test(trimmed) ||
+      /^\|/.test(trimmed) ||
+      /^[-*+]\s/.test(trimmed) ||
+      /^\d+\.\s/.test(trimmed) ||
+      /^!\[/.test(trimmed) ||
+      /^<[^>]+>/.test(trimmed)
+    ) {
+      if (paragraph.length) break;
+      continue;
+    }
+
+    paragraph.push(trimmed);
+  }
+
+  return normalizeMarkdownText(paragraph.join(" "));
+}
+
+async function pathExists(targetPath) {
+  try {
+    await fs.access(targetPath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function readReadme(resourceDirectoryPath) {
+  for (const fileName of supportedReadmeNames) {
+    const candidatePath = path.join(resourceDirectoryPath, fileName);
+    if (await pathExists(candidatePath)) {
+      const content = await fs.readFile(candidatePath, "utf8");
+      return { fileName, content };
+    }
+  }
+
+  return null;
+}
+
+async function discoverPreviewImage(resourceDirectoryPath, resourceRelativeDirectory) {
+  const entries = await fs.readdir(resourceDirectoryPath, { withFileTypes: true });
+
+  const files = entries
+    .filter((entry) => entry.isFile())
+    .map((entry) => entry.name)
+    .filter((fileName) => imageExtensions.has(path.extname(fileName).toLowerCase()));
+
+  if (!files.length) {
+    return "";
+  }
+
+  const rankFile = (fileName) => {
+    const normalized = fileName.toLowerCase();
+    const hintedIndex = previewNameHints.findIndex((hint) => normalized.includes(hint));
+    return hintedIndex === -1 ? Number.MAX_SAFE_INTEGER : hintedIndex;
+  };
+
+  files.sort((left, right) => {
+    const rankDiff = rankFile(left) - rankFile(right);
+    if (rankDiff !== 0) return rankDiff;
+    return left.localeCompare(right);
   });
 
-  if (allow404 && response.status === 404) {
-    return null;
-  }
-
-  if (!response.ok) {
-    throw new Error(`GitHub API request failed for ${endpoint}: ${response.status} ${response.statusText}`);
-  }
-
-  return response.json();
+  return toPosix(path.join(resourceRelativeDirectory, files[0]));
 }
 
-async function listRepositories() {
-  const repositories = [];
-  let page = 1;
+async function listResourceDirectories(category) {
+  const categoryDirectoryPath = path.join(repositoryRoot, category.sourceDir);
 
-  while (true) {
-    const batch = await githubRequest(`/users/${owner}/repos?per_page=100&page=${page}&sort=updated`);
-    if (!Array.isArray(batch) || !batch.length) break;
-
-    repositories.push(...batch);
-
-    if (batch.length < 100) {
-      break;
-    }
-
-    page += 1;
+  if (!(await pathExists(categoryDirectoryPath))) {
+    console.warn(`Category directory not found: ${category.sourceDir}`);
+    return [];
   }
 
-  return repositories;
+  const entries = await fs.readdir(categoryDirectoryPath, { withFileTypes: true });
+
+  return entries
+    .filter((entry) => entry.isDirectory() && !entry.name.startsWith("."))
+    .map((entry) => entry.name)
+    .sort((left, right) => left.localeCompare(right));
 }
 
-async function getTopics(repository) {
-  const payload = await githubRequest(`/repos/${owner}/${repository.name}/topics`);
-  return Array.isArray(payload?.names) ? payload.names : [];
-}
+async function normalizeResource(category, resourceDirectoryName) {
+  const resourceRelativeDirectory = path.join(category.sourceDir, resourceDirectoryName);
+  const resourceDirectoryPath = path.join(repositoryRoot, resourceRelativeDirectory);
+  const readme = await readReadme(resourceDirectoryPath);
+  const fallbackTitle = humanizeSlug(resourceDirectoryName);
 
-async function getLatestRelease(repository) {
-  const payload = await githubRequest(`/repos/${owner}/${repository.name}/releases/latest`, { allow404: true });
-  if (!payload) return null;
+  const title = extractTitle(readme?.content || "", fallbackTitle);
+  const description = extractDescription(readme?.content || "") || `${category.label} resource.`;
+  const previewImageUrl = await discoverPreviewImage(resourceDirectoryPath, resourceRelativeDirectory);
+  const resourcePath = `${toPosix(resourceRelativeDirectory)}/`;
+  const documentationPath = readme ? `${toPosix(path.join(resourceRelativeDirectory, readme.fileName))}` : "";
+  const stats = await fs.stat(resourceDirectoryPath);
 
   return {
-    name: payload.name || payload.tag_name,
-    tagName: payload.tag_name || null,
-    url: payload.html_url,
-    publishedAt: payload.published_at || payload.created_at || null
-  };
-}
-
-async function getReadmeUrl(repository) {
-  const payload = await githubRequest(`/repos/${owner}/${repository.name}/readme`, { allow404: true });
-  if (payload?.html_url) {
-    return payload.html_url;
-  }
-
-  return `${repository.html_url}/blob/${repository.default_branch}/README.md`;
-}
-
-function normalizeResource(repository, topics, documentationUrl, release) {
-  const matchedCategories = topics
-    .map((topic) => primaryTopicLookup.get(topic))
-    .filter(Boolean);
-
-  if (matchedCategories.length !== 1) {
-    if (matchedCategories.length > 1) {
-      console.warn(`Skipping ${repository.full_name}: multiple primary topics detected (${matchedCategories.map((item) => item.topic).join(", ")}).`);
-    }
-
-    return null;
-  }
-
-  const category = matchedCategories[0];
-  const tags = topics.filter((topic) => topic !== category.topic);
-
-  return {
-    id: slugify(repository.full_name),
-    slug: slugify(repository.name),
-    title: repository.name,
-    description: repository.description || "",
+    id: slugify(`${category.key}-${resourceDirectoryName}`),
+    slug: slugify(resourceDirectoryName),
+    title,
+    description,
     category: category.label,
     categoryKey: category.key,
-    tags,
-    repositoryUrl: repository.html_url,
-    documentationUrl,
-    release,
-    stars: repository.stargazers_count ?? 0,
-    updatedAt: repository.updated_at || repository.pushed_at || null,
-    language: repository.language || ""
+    tags: [],
+    repositoryUrl: documentationPath || resourcePath,
+    documentationUrl: documentationPath,
+    release: null,
+    stars: 0,
+    updatedAt: stats.mtime.toISOString(),
+    language: "",
+    previewImageUrl,
+    sourcePath: resourcePath
   };
 }
 
@@ -148,10 +220,13 @@ function buildCatalog(resources) {
 
   return {
     generatedAt: new Date().toISOString(),
-    owner,
+    owner: "jmanriquerios1",
     totalResources: resources.length,
-    categories: primaryCategories.map((category) => ({
-      ...category,
+    categories: categoryDefinitions.map((category) => ({
+      key: category.key,
+      label: category.label,
+      topic: category.topic,
+      route: category.route,
       resourceCount: categoryCounts.get(category.key) || 0
     })),
     resources
@@ -172,7 +247,9 @@ function validateCatalog(catalog) {
       "category",
       "categoryKey",
       "repositoryUrl",
-      "documentationUrl"
+      "documentationUrl",
+      "previewImageUrl",
+      "sourcePath"
     ];
 
     for (const field of requiredStringFields) {
@@ -196,33 +273,17 @@ function validateCatalog(catalog) {
 }
 
 async function main() {
-  if (!token && apiBaseUrl === "https://api.github.com") {
-    console.warn("GITHUB_TOKEN is not set; GitHub API rate limits may prevent catalog generation.");
-  }
+  const resources = [];
 
-  const repositories = await listRepositories();
-  const normalizedResources = [];
+  for (const category of categoryDefinitions) {
+    const directories = await listResourceDirectories(category);
 
-  for (const repository of repositories) {
-    const topics = await getTopics(repository);
-    const matchedCategories = topics.filter((topic) => primaryTopicLookup.has(topic));
-
-    if (!matchedCategories.length) {
-      continue;
-    }
-
-    const [documentationUrl, release] = await Promise.all([
-      getReadmeUrl(repository),
-      getLatestRelease(repository)
-    ]);
-
-    const normalized = normalizeResource(repository, topics, documentationUrl, release);
-    if (normalized) {
-      normalizedResources.push(normalized);
+    for (const directoryName of directories) {
+      resources.push(await normalizeResource(category, directoryName));
     }
   }
 
-  const catalog = buildCatalog(sortResources(normalizedResources));
+  const catalog = buildCatalog(sortResources(resources));
   validateCatalog(catalog);
 
   await fs.mkdir(path.dirname(outputPath), { recursive: true });

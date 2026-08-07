@@ -7,6 +7,20 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+function isExternalUrl(value) {
+  return /^https?:\/\//i.test(String(value || ""));
+}
+
+function resolveResourceUrl(value) {
+  const normalized = String(value || "").trim();
+  if (!normalized) return "";
+  if (isExternalUrl(normalized) || normalized.startsWith("mailto:") || normalized.startsWith("#")) {
+    return normalized;
+  }
+
+  return `${window.portalCatalog.getSiteRoot()}${normalized.replace(/^\/+/, "")}`;
+}
+
 function resourceCardTemplate(resource) {
   const tagLabels = new Set();
   const tags = [];
@@ -37,12 +51,25 @@ function resourceCardTemplate(resource) {
     ? `<a href="${escapeHtml(resource.release.url)}" target="_blank" rel="noopener noreferrer">Release</a>`
     : "";
 
-  const documentationLink = resource.documentationUrl
-    ? `<a href="${escapeHtml(resource.documentationUrl)}" target="_blank" rel="noopener noreferrer">Documentation</a>`
+  const repositoryUrl = resolveResourceUrl(resource.repositoryUrl);
+  const documentationUrl = resolveResourceUrl(resource.documentationUrl);
+  const repositoryLinkAttributes = isExternalUrl(repositoryUrl)
+    ? 'target="_blank" rel="noopener noreferrer"'
+    : "";
+  const documentationLinkAttributes = isExternalUrl(documentationUrl)
+    ? 'target="_blank" rel="noopener noreferrer"'
+    : "";
+  const documentationLink = documentationUrl && documentationUrl !== repositoryUrl
+    ? `<a href="${escapeHtml(documentationUrl)}" ${documentationLinkAttributes}>Documentation</a>`
+    : "";
+  const previewImage = resolveResourceUrl(resource.previewImageUrl);
+  const previewMarkup = previewImage
+    ? `<img class="card-preview" src="${escapeHtml(previewImage)}" alt="${escapeHtml(resource.title)} preview image" loading="lazy">`
     : "";
 
   return `
     <article class="card">
+      ${previewMarkup}
       <p class="eyebrow">// ${escapeHtml(resource.category.toLowerCase())}</p>
       <h3>${escapeHtml(resource.title)}</h3>
       <p>${escapeHtml(resource.description || "No description available.")}</p>
@@ -53,7 +80,7 @@ function resourceCardTemplate(resource) {
         <span class="meta">${escapeHtml(resource.language || "Unknown")}</span>
       </div>
       <div class="card-links">
-        <a href="${escapeHtml(resource.repositoryUrl)}" target="_blank" rel="noopener noreferrer">Repository</a>
+        <a href="${escapeHtml(repositoryUrl)}" ${repositoryLinkAttributes}>Repository</a>
         ${documentationLink}
         ${releaseLink}
       </div>

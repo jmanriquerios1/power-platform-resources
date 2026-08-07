@@ -6,13 +6,11 @@ Open-source Power Platform portal for developers, consultants and architects.
 
 ## Purpose
 
-This repository hosts the GitHub Pages portal that organizes public Power Platform resources across multiple repositories.
+This repository hosts the GitHub Pages portal and the resource source folders used to generate the catalog automatically.
 
 It is the central entry point for:
 
-- repositories
 - documentation
-- releases
 - tutorials
 - architecture references
 - speaking resources
@@ -59,6 +57,11 @@ Typography:
       generate-resources-catalog.yml
 
   resources/
+  pcf/
+  code-apps/
+  power-pages-spa/
+  plugins/
+  components/
   tutorials/
   architecture/
   speaking/
@@ -103,26 +106,25 @@ Then open `http://localhost:8000`.
 
 No manual JavaScript or HTML edits are required to publish a new resource.
 
-1. Create a GitHub repository under `jmanriquerios1`.
-2. Add **exactly one** primary topic:
-   - `pcf` → PCF Controls
-   - `code-app` → Code Apps
-   - `power-pages-spa` → Power Pages SPA
-   - `dataverse-plugin` → Dataverse Plugins
-   - `power-platform-component` → Power Platform Components
-3. Add a repository description and any secondary technology topics you want to display.
-4. Add a README.
-5. Optionally publish a GitHub Release.
-6. Wait for the scheduled workflow or run **Generate resource catalog** manually.
+1. Copy your resource folder into one of these top-level folders:
+   - `pcf/` → PCF Controls
+   - `code-apps/` → Code Apps
+   - `power-pages-spa/` → Power Pages SPA
+   - `plugins/` → Dataverse Plugins
+   - `components/` → Power Platform Components
+2. Ensure the resource folder includes `README.md` (title/description are parsed from it when possible).
+3. Optionally add a preview image file in the same folder (for example `preview.png`).
+4. Commit and push to `main`.
+5. GitHub Actions regenerates `assets/data/resources.json` automatically.
 
-The workflow calls the GitHub API, filters repositories by those five primary topics, and regenerates `assets/data/resources.json`. The home page, resources index, and category pages render directly from that generated JSON catalog.
+The workflow scans those local folders, detects direct subfolders as resources, regenerates `assets/data/resources.json`, and the portal pages render directly from that generated catalog.
 
 ## Catalog generation
 
-Run the generator locally with a GitHub token:
+Run the generator locally:
 
 ```bash
-GITHUB_TOKEN=your_token_here node scripts/generate-resources-json.mjs
+node scripts/generate-resources-json.mjs
 ```
 
 The generated catalog is written to `assets/data/resources.json`.

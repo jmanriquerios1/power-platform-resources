@@ -119,6 +119,15 @@
   box-shadow: var(--shadow-soft);
 }
 
+.card-preview {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  margin-bottom: var(--space-2);
+}
+
 .card h3 {
   margin-bottom: var(--space-1);
 }

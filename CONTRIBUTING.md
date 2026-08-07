@@ -19,4 +19,6 @@ Thanks for contributing to this Power Platform community portal.
 ## Resource additions
 
 Do not add or edit hardcoded resource definitions in JavaScript or HTML.
-Publish resources by creating repositories with exactly one supported primary topic, then let the catalog workflow regenerate `assets/data/resources.json`.
+Publish resources by adding a direct subfolder under one of these top-level directories: `pcf/`, `code-apps/`, `power-pages-spa/`, `plugins/`, or `components/`.
+Include a `README.md` in the resource folder and optionally a preview image.
+Then push your change and let the catalog workflow regenerate `assets/data/resources.json`.
