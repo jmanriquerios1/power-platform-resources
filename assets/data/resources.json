@@ -1,43 +1,61 @@
 {
-  "generatedAt": "2026-08-07T18:14:55.581Z",
+  "generatedAt": "2026-08-07T18:30:17.075Z",
   "owner": "jmanriquerios1",
-  "totalResources": 0,
+  "totalResources": 1,
   "categories": [
     {
       "key": "pcf",
       "label": "PCF Controls",
-      "topic": "pcf",
       "route": "pcf",
-      "resourceCount": 0
+      "resourceCount": 1
     },
     {
       "key": "code-apps",
       "label": "Code Apps",
-      "topic": "code-app",
       "route": "code-apps",
       "resourceCount": 0
     },
     {
       "key": "power-pages",
       "label": "Power Pages SPA",
-      "topic": "power-pages-spa",
       "route": "power-pages",
       "resourceCount": 0
     },
     {
       "key": "plugins",
       "label": "Dataverse Plugins",
-      "topic": "dataverse-plugin",
       "route": "plugins",
       "resourceCount": 0
     },
     {
       "key": "components",
       "label": "Power Platform Components",
-      "topic": "power-platform-component",
       "route": "components",
       "resourceCount": 0
     }
   ],
-  "resources": []
+  "resources": [
+    {
+      "id": "pcf-pcf-choice-color-tiles",
+      "slug": "pcf-choice-color-tiles",
+      "title": "Choice Color Tiles",
+      "description": "Componente PCF genérico para representar opciones mediante tarjetas de color, sin dependencias de nombres de campos o esquemas de entorno.",
+      "category": "PCF Controls",
+      "categoryKey": "pcf",
+      "tags": [
+        "Power Platform",
+        "Dataverse",
+        "TypeScript",
+        "React",
+        "Fluent UI"
+      ],
+      "repositoryUrl": "https://github.com/jmanriquerios1/power-platform-resources/tree/main/resources/pcf/pcf-choice-color-tiles",
+      "documentationUrl": "resources/pcf/pcf-choice-color-tiles/README.md",
+      "imageUrl": "resources/pcf/pcf-choice-color-tiles/image.png",
+      "release": null,
+      "stars": 0,
+      "updatedAt": null,
+      "language": "TypeScript"
+    }
+  ]
 }

@@ -5,23 +5,47 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(__dirname, "..");
+const resourcesRoot = path.join(repositoryRoot, "resources");
 const outputPath = path.resolve(
   repositoryRoot,
   process.env.RESOURCES_OUTPUT_PATH || "assets/data/resources.json"
 );
-const owner = process.env.GITHUB_OWNER || "jmanriquerios1";
-const apiBaseUrl = (process.env.GITHUB_API_BASE_URL || "https://api.github.com").replace(/\/$/, "");
-const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
+const repositoryName = process.env.GITHUB_REPOSITORY || "jmanriquerios1/power-platform-resources";
+const repositoryOwner = repositoryName.split("/")[0] || "jmanriquerios1";
+const defaultBranch = process.env.RESOURCES_REPOSITORY_BRANCH || "main";
+const githubRepositoryUrl = `https://github.com/${repositoryName}`;
 
 const primaryCategories = [
-  { key: "pcf", label: "PCF Controls", topic: "pcf", route: "pcf" },
-  { key: "code-apps", label: "Code Apps", topic: "code-app", route: "code-apps" },
-  { key: "power-pages", label: "Power Pages SPA", topic: "power-pages-spa", route: "power-pages" },
-  { key: "plugins", label: "Dataverse Plugins", topic: "dataverse-plugin", route: "plugins" },
-  { key: "components", label: "Power Platform Components", topic: "power-platform-component", route: "components" }
+  { key: "pcf", label: "PCF Controls", directory: "pcf", route: "pcf" },
+  { key: "code-apps", label: "Code Apps", directory: "code-apps", route: "code-apps" },
+  { key: "power-pages", label: "Power Pages SPA", directory: "power-pages", route: "power-pages" },
+  { key: "plugins", label: "Dataverse Plugins", directory: "plugins", route: "plugins" },
+  { key: "components", label: "Power Platform Components", directory: "components", route: "components" }
 ];
 
-const primaryTopicLookup = new Map(primaryCategories.map((category) => [category.topic, category]));
+const releaseFileExtensions = new Set([
+  ".zip",
+  ".msapp",
+  ".cab",
+  ".jar",
+  ".dll",
+  ".vsix",
+  ".nupkg",
+  ".tgz",
+  ".gz",
+  ".7z",
+  ".rar"
+]);
+
+const languageTags = new Map([
+  ["typescript", "TypeScript"],
+  ["javascript", "JavaScript"],
+  ["c#", "C#"],
+  ["csharp", "C#"],
+  ["power fx", "Power Fx"],
+  ["html", "HTML"],
+  ["css", "CSS"]
+]);
 
 function slugify(value) {
   return String(value || "")
@@ -31,110 +55,187 @@ function slugify(value) {
     .replace(/^-+|-+$/g, "");
 }
 
-async function githubRequest(endpoint, { allow404 = false } = {}) {
-  const response = await fetch(`${apiBaseUrl}${endpoint}`, {
-    headers: {
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      "User-Agent": "power-platform-resources-catalog-generator",
-      ...(token ? { Authorization: ["Bearer", token].join(" ") } : {})
-    }
-  });
+function toPosixPath(value) {
+  return value.split(path.sep).join("/");
+}
 
-  if (allow404 && response.status === 404) {
-    return null;
+async function pathExists(targetPath) {
+  try {
+    await fs.access(targetPath);
+    return true;
+  } catch {
+    return false;
   }
-
-  if (!response.ok) {
-    throw new Error(`GitHub API request failed for ${endpoint}: ${response.status} ${response.statusText}`);
-  }
-
-  return response.json();
 }
 
-async function listRepositories() {
-  const repositories = [];
-  let page = 1;
-
-  while (true) {
-    const batch = await githubRequest(`/users/${owner}/repos?per_page=100&page=${page}&sort=updated`);
-    if (!Array.isArray(batch) || !batch.length) break;
-
-    repositories.push(...batch);
-
-    if (batch.length < 100) {
-      break;
-    }
-
-    page += 1;
-  }
-
-  return repositories;
+function stripMarkdown(value) {
+  return String(value || "")
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/^>\s?/gm, "")
+    .replace(/^[-*+]\s+/gm, "")
+    .replace(/^\d+\.\s+/gm, "")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/__([^_]+)__/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1")
+    .replace(/_([^_]+)_/g, "$1")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-async function getTopics(repository) {
-  const payload = await githubRequest(`/repos/${owner}/${repository.name}/topics`);
-  return Array.isArray(payload?.names) ? payload.names : [];
+function extractTitle(readmeContent, fallbackTitle) {
+  const headingMatch = String(readmeContent || "").match(/^#\s+(.+)$/m);
+  return stripMarkdown(headingMatch?.[1] || "") || fallbackTitle;
 }
 
-async function getLatestRelease(repository) {
-  const payload = await githubRequest(`/repos/${owner}/${repository.name}/releases/latest`, { allow404: true });
-  if (!payload) return null;
+function extractDescription(readmeContent) {
+  if (!readmeContent) return "";
 
-  return {
-    name: payload.name || payload.tag_name,
-    tagName: payload.tag_name || null,
-    url: payload.html_url,
-    publishedAt: payload.published_at || payload.created_at || null
-  };
-}
-
-async function getReadmeUrl(repository) {
-  const payload = await githubRequest(`/repos/${owner}/${repository.name}/readme`, { allow404: true });
-  if (payload?.html_url) {
-    return payload.html_url;
-  }
-
-  return `${repository.html_url}/blob/${repository.default_branch}/README.md`;
-}
-
-function normalizeResource(repository, topics, documentationUrl, release) {
-  const matchedCategories = topics
-    .map((topic) => primaryTopicLookup.get(topic))
+  const paragraphs = String(readmeContent)
+    .replace(/\r\n/g, "\n")
+    .split(/\n\s*\n/)
+    .map((section) => section.trim())
     .filter(Boolean);
 
-  if (matchedCategories.length !== 1) {
-    if (matchedCategories.length > 1) {
-      console.warn(`Skipping ${repository.full_name}: multiple primary topics detected (${matchedCategories.map((item) => item.topic).join(", ")}).`);
-    }
+  for (const paragraph of paragraphs) {
+    if (/^#\s+/.test(paragraph)) continue;
+    if (/^(?:[-*+]\s+|\d+\.\s+)/m.test(paragraph)) continue;
 
-    return null;
+    const cleaned = stripMarkdown(paragraph);
+    if (cleaned) {
+      return cleaned;
+    }
   }
 
-  const category = matchedCategories[0];
-  const tags = topics.filter((topic) => topic !== category.topic);
+  return "";
+}
+
+function extractTags(readmeContent) {
+  if (!readmeContent) return [];
+
+  const tags = [];
+  let inTechnologySection = false;
+
+  for (const rawLine of String(readmeContent).replace(/\r\n/g, "\n").split("\n")) {
+    const line = rawLine.trim();
+    if (!line) continue;
+
+    const headingMatch = line.match(/^#{2,6}\s+(.+)$/);
+    if (headingMatch) {
+      inTechnologySection = /tecnolog(?:i|í)as|technolog(?:y|ies)/i.test(headingMatch[1]);
+      continue;
+    }
+
+    if (!inTechnologySection) continue;
+
+    const bulletMatch = line.match(/^[-*+]\s+(.+)$/);
+    if (!bulletMatch) continue;
+
+    const tag = stripMarkdown(bulletMatch[1]);
+    if (tag && !tags.some((item) => item.toLowerCase() === tag.toLowerCase())) {
+      tags.push(tag);
+    }
+  }
+
+  return tags;
+}
+
+function extractLanguage(tags) {
+  for (const tag of tags) {
+    const language = languageTags.get(String(tag).trim().toLowerCase());
+    if (language) {
+      return language;
+    }
+  }
+
+  return "";
+}
+
+async function getReleaseFile(resourceDirectory) {
+  const directoriesToScan = [resourceDirectory];
+
+  while (directoriesToScan.length) {
+    const currentDirectory = directoriesToScan.shift();
+    const entries = await fs.readdir(currentDirectory, { withFileTypes: true });
+
+    for (const entry of entries) {
+      if (entry.name.startsWith(".")) continue;
+
+      const entryPath = path.join(currentDirectory, entry.name);
+      if (entry.isDirectory()) {
+        directoriesToScan.push(entryPath);
+        continue;
+      }
+
+      const extension = path.extname(entry.name).toLowerCase();
+      if (!releaseFileExtensions.has(extension)) {
+        continue;
+      }
+
+      return entryPath;
+    }
+  }
+
+  return null;
+}
+
+async function normalizeResource(category, resourceEntry) {
+  const resourceDirectory = path.join(resourcesRoot, category.directory, resourceEntry.name);
+  const relativeResourcePath = toPosixPath(path.relative(repositoryRoot, resourceDirectory));
+  const readmePath = path.join(resourceDirectory, "README.md");
+  const imagePath = path.join(resourceDirectory, "image.png");
+
+  const [readmeContent, hasImage, releaseFile] = await Promise.all([
+    pathExists(readmePath)
+      ? fs.readFile(readmePath, "utf8")
+      : Promise.resolve(""),
+    pathExists(imagePath),
+    getReleaseFile(resourceDirectory)
+  ]);
+
+  const title = extractTitle(readmeContent, resourceEntry.name);
+  const tags = extractTags(readmeContent);
+  const language = extractLanguage(tags);
+  const description = extractDescription(readmeContent);
+  const relativeReadmePath = toPosixPath(path.relative(repositoryRoot, readmePath));
 
   return {
-    id: slugify(repository.full_name),
-    slug: slugify(repository.name),
-    title: repository.name,
-    description: repository.description || "",
+    id: slugify(`${category.key}-${resourceEntry.name}`),
+    slug: slugify(resourceEntry.name),
+    title,
+    description,
     category: category.label,
     categoryKey: category.key,
     tags,
-    repositoryUrl: repository.html_url,
-    documentationUrl,
-    release,
-    stars: repository.stargazers_count ?? 0,
-    updatedAt: repository.updated_at || repository.pushed_at || null,
-    language: repository.language || ""
+    repositoryUrl: `${githubRepositoryUrl}/tree/${defaultBranch}/${relativeResourcePath}`,
+    documentationUrl: readmeContent ? relativeReadmePath : "",
+    imageUrl: hasImage ? toPosixPath(path.relative(repositoryRoot, imagePath)) : "",
+    release: releaseFile
+      ? {
+          name: path.basename(releaseFile),
+          url: toPosixPath(path.relative(repositoryRoot, releaseFile))
+        }
+      : null,
+    stars: 0,
+    updatedAt: null,
+    language
   };
 }
 
 function sortResources(resources) {
+  const categoryOrder = new Map(primaryCategories.map((category, index) => [category.key, index]));
+
   return [...resources].sort((left, right) => {
-    const updatedComparison = String(right.updatedAt || "").localeCompare(String(left.updatedAt || ""));
-    if (updatedComparison !== 0) return updatedComparison;
+    const byCategory = (categoryOrder.get(left.categoryKey) ?? Number.MAX_SAFE_INTEGER)
+      - (categoryOrder.get(right.categoryKey) ?? Number.MAX_SAFE_INTEGER);
+    if (byCategory !== 0) return byCategory;
+
+    const byTitle = String(left.title || "").localeCompare(String(right.title || ""));
+    if (byTitle !== 0) return byTitle;
 
     return String(left.id || "").localeCompare(String(right.id || ""));
   });
@@ -148,10 +249,12 @@ function buildCatalog(resources) {
 
   return {
     generatedAt: new Date().toISOString(),
-    owner,
+    owner: repositoryOwner,
     totalResources: resources.length,
     categories: primaryCategories.map((category) => ({
-      ...category,
+      key: category.key,
+      label: category.label,
+      route: category.route,
       resourceCount: categoryCounts.get(category.key) || 0
     })),
     resources
@@ -172,7 +275,9 @@ function validateCatalog(catalog) {
       "category",
       "categoryKey",
       "repositoryUrl",
-      "documentationUrl"
+      "documentationUrl",
+      "imageUrl",
+      "language"
     ];
 
     for (const field of requiredStringFields) {
@@ -189,40 +294,36 @@ function validateCatalog(catalog) {
       throw new Error(`Invalid stars value for ${resource.id}.`);
     }
 
-    if (resource.release !== null && typeof resource.release !== "object") {
+    if (resource.updatedAt !== null && typeof resource.updatedAt !== "string") {
+      throw new Error(`Invalid updatedAt value for ${resource.id}.`);
+    }
+
+    if (
+      resource.release !== null
+      && (typeof resource.release !== "object"
+      || typeof resource.release.url !== "string"
+      || typeof resource.release.name !== "string")
+    ) {
       throw new Error(`Invalid release value for ${resource.id}.`);
     }
   }
 }
 
+async function scanCategory(category) {
+  const categoryDirectory = path.join(resourcesRoot, category.directory);
+  const entries = await fs.readdir(categoryDirectory, { withFileTypes: true });
+  const resourceEntries = entries
+    .filter((entry) => entry.isDirectory() && !entry.name.startsWith("."))
+    .sort((left, right) => left.name.localeCompare(right.name));
+
+  return Promise.all(resourceEntries.map((entry) => normalizeResource(category, entry)));
+}
+
 async function main() {
-  if (!token && apiBaseUrl === "https://api.github.com") {
-    console.warn("GITHUB_TOKEN is not set; GitHub API rate limits may prevent catalog generation.");
-  }
+  const categoryResources = await Promise.all(primaryCategories.map(scanCategory));
+  const resources = sortResources(categoryResources.flat());
+  const catalog = buildCatalog(resources);
 
-  const repositories = await listRepositories();
-  const normalizedResources = [];
-
-  for (const repository of repositories) {
-    const topics = await getTopics(repository);
-    const matchedCategories = topics.filter((topic) => primaryTopicLookup.has(topic));
-
-    if (!matchedCategories.length) {
-      continue;
-    }
-
-    const [documentationUrl, release] = await Promise.all([
-      getReadmeUrl(repository),
-      getLatestRelease(repository)
-    ]);
-
-    const normalized = normalizeResource(repository, topics, documentationUrl, release);
-    if (normalized) {
-      normalizedResources.push(normalized);
-    }
-  }
-
-  const catalog = buildCatalog(sortResources(normalizedResources));
   validateCatalog(catalog);
 
   await fs.mkdir(path.dirname(outputPath), { recursive: true });

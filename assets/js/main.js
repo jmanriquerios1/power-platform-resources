@@ -34,11 +34,11 @@ function resourceCardTemplate(resource) {
     .join("");
 
   const releaseLink = resource.release?.url
-    ? `<a href="${escapeHtml(resource.release.url)}" target="_blank" rel="noopener noreferrer">Release</a>`
+    ? `<a href="${escapeHtml(window.portalCatalog.resolveUrl(resource.release.url))}" target="_blank" rel="noopener noreferrer">Release</a>`
     : "";
 
   const documentationLink = resource.documentationUrl
-    ? `<a href="${escapeHtml(resource.documentationUrl)}" target="_blank" rel="noopener noreferrer">Documentation</a>`
+    ? `<a href="${escapeHtml(window.portalCatalog.resolveUrl(resource.documentationUrl))}" target="_blank" rel="noopener noreferrer">Documentation</a>`
     : "";
 
   return `
@@ -53,7 +53,7 @@ function resourceCardTemplate(resource) {
         <span class="meta">${escapeHtml(resource.language || "Unknown")}</span>
       </div>
       <div class="card-links">
-        <a href="${escapeHtml(resource.repositoryUrl)}" target="_blank" rel="noopener noreferrer">Repository</a>
+        <a href="${escapeHtml(window.portalCatalog.resolveUrl(resource.repositoryUrl))}" target="_blank" rel="noopener noreferrer">Source Code</a>
         ${documentationLink}
         ${releaseLink}
       </div>
