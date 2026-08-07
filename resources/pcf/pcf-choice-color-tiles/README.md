@@ -66,6 +66,9 @@ Descarga la última versión desde GitHub Releases.
 
 MIT License.
 
+## Solution
+https://github.com/jmanriquerios1/power-platform-resources/releases/tag/pcf-choice-color-tiles-v1.0.0
+
 ## Autor
 
 Jonathan Manrique
