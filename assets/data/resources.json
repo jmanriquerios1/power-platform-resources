@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-07T18:48:52.547Z",
+  "generatedAt": "2026-08-07T18:51:27.039Z",
   "owner": "jmanriquerios1",
   "totalResources": 1,
   "categories": [
@@ -52,10 +52,7 @@
       "repositoryUrl": "https://github.com/jmanriquerios1/power-platform-resources/tree/main/resources/pcf/pcf-choice-color-tiles",
       "documentationUrl": "resources/pcf/pcf-choice-color-tiles/README.md",
       "imageUrl": "resources/pcf/pcf-choice-color-tiles/image.png",
-      "release": {
-        "name": "pcfchoicecolortiles_1_0_0_0_managed.zip",
-        "url": "resources/pcf/pcf-choice-color-tiles/Solution/pcfchoicecolortiles_1_0_0_0_managed.zip"
-      },
+      "release": null,
       "stars": 0,
       "updatedAt": null,
       "language": "TypeScript"
