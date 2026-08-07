@@ -1,0 +1,96 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(28, 35, 51, 0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(219, 234, 254, 0.2);
+}
+
+.nav-wrap,
+.section-wrap,
+.footer-wrap {
+  width: min(100% - 2rem, var(--max-content));
+  margin-inline: auto;
+}
+
+.nav-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 4rem;
+}
+
+.brand {
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.brand strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+}
+
+.brand span {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-blue-10);
+  font-family: var(--font-meta);
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--color-white);
+  text-decoration: none;
+  font-weight: 500;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+}
+
+.nav-links a[aria-current="page"] {
+  color: var(--color-blue-10);
+}
+
+.section {
+  padding-block: var(--space-6);
+}
+
+.section-light {
+  background: var(--color-ivory);
+}
+
+.section-dark {
+  background: var(--color-slate);
+  color: var(--color-white);
+}
+
+.section-dark h2,
+.section-dark h3,
+.section-dark p {
+  color: var(--color-white);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.footer {
+  background: var(--color-slate);
+  color: var(--color-white);
+  padding-block: var(--space-5);
+}
