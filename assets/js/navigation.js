@@ -1,50 +1,108 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // ── Mobile menu toggle ─────────────────────────────────────────────
   const toggle = document.getElementById("menuToggle");
   const links = document.getElementById("navLinks");
-  const dropdownTrigger = document.querySelector(".nav-dropdown-trigger");
-  const dropdownPanel = document.getElementById("resourcesMenu");
 
-  if (!toggle || !links) return;
+  if (toggle && links) {
+    toggle.addEventListener("click", () => {
+      const isOpen = links.dataset.open === "true";
+      links.dataset.open = String(!isOpen);
+      toggle.setAttribute("aria-expanded", String(!isOpen));
+    });
+  }
 
-  toggle.addEventListener("click", () => {
-    const isOpen = links.dataset.open === "true";
-    links.dataset.open = String(!isOpen);
-    toggle.setAttribute("aria-expanded", String(!isOpen));
-  });
+  // ── Header shadow on scroll ────────────────────────────────────────
+  const siteHeader = document.querySelector(".site-header");
+  if (siteHeader) {
+    window.addEventListener("scroll", () => {
+      siteHeader.classList.toggle("is-scrolled", window.scrollY > 20);
+    }, { passive: true });
+  }
 
-  if (!dropdownTrigger || !dropdownPanel) return;
+  // ── Accessible dropdowns ───────────────────────────────────────────
+  document.querySelectorAll(".nav-item--dropdown").forEach((item) => {
+    const trigger = item.querySelector(".nav-dropdown-trigger");
+    const panel = item.querySelector(".nav-dropdown-panel");
 
-  const setDropdownState = (isOpen) => {
-    dropdownPanel.dataset.open = String(isOpen);
-    dropdownTrigger.setAttribute("aria-expanded", String(isOpen));
-  };
+    if (!trigger || !panel) return;
 
-  dropdownTrigger.addEventListener("click", () => {
-    const isOpen = dropdownPanel.dataset.open === "true";
-    setDropdownState(!isOpen);
-  });
+    // Ensure required ARIA attributes are present
+    if (!trigger.hasAttribute("aria-haspopup")) {
+      trigger.setAttribute("aria-haspopup", "true");
+    }
+    if (!trigger.hasAttribute("aria-expanded")) {
+      trigger.setAttribute("aria-expanded", "false");
+    }
 
-  dropdownTrigger.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      setDropdownState(true);
-      const firstLink = dropdownPanel.querySelector("a");
+    const isOpen = () => item.classList.contains("open");
+
+    const openDropdown = () => {
+      item.classList.add("open");
+      trigger.setAttribute("aria-expanded", "true");
+      // Move focus to first focusable item
+      const firstLink = panel.querySelector("a");
       if (firstLink) firstLink.focus();
-    } else if (event.key === "Escape") {
-      setDropdownState(false);
-      dropdownTrigger.focus();
-    }
-  });
+    };
 
-  document.addEventListener("click", (event) => {
-    if (!dropdownTrigger.contains(event.target) && !dropdownPanel.contains(event.target)) {
-      setDropdownState(false);
-    }
-  });
+    const closeDropdown = (returnFocus = false) => {
+      item.classList.remove("open");
+      trigger.setAttribute("aria-expanded", "false");
+      if (returnFocus) trigger.focus();
+    };
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      setDropdownState(false);
-    }
+    // Click / keyboard open-close
+    trigger.addEventListener("click", () => {
+      isOpen() ? closeDropdown() : openDropdown();
+    });
+
+    trigger.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        isOpen() ? closeDropdown(true) : openDropdown();
+      } else if (event.key === "ArrowDown") {
+        event.preventDefault();
+        openDropdown();
+      } else if (event.key === "Escape") {
+        closeDropdown(true);
+      }
+    });
+
+    // Arrow-key navigation inside panel
+    panel.addEventListener("keydown", (event) => {
+      const focusable = Array.from(panel.querySelectorAll("a"));
+      if (!focusable.length) return;
+      const current = document.activeElement;
+      const idx = focusable.indexOf(current);
+
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        const next = focusable[(idx + 1) % focusable.length];
+        next.focus();
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        const prev = focusable[(idx - 1 + focusable.length) % focusable.length];
+        prev.focus();
+      } else if (event.key === "Escape") {
+        closeDropdown(true);
+      } else if (event.key === "Tab") {
+        // Close on Tab-out
+        closeDropdown();
+      }
+    });
+
+    // Close on outside click
+    document.addEventListener("click", (event) => {
+      if (!item.contains(event.target)) {
+        closeDropdown();
+      }
+    });
+
+    // Close on mouse leave
+    item.addEventListener("mouseleave", () => {
+      // Only auto-close on mouse leave if not keyboard-navigating inside
+      if (!panel.contains(document.activeElement)) {
+        closeDropdown();
+      }
+    });
   });
 });
