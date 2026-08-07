@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resources | Jonathan Belenguer</title>
+    <meta name="description" content="Browse and filter Power Platform resources by category, technology and repository.">
+    <link rel="canonical" href="https://jmanriquerios1.github.io/power-platform-resources/resources/">
+    <meta property="og:title" content="Resources | Jonathan Belenguer">
+    <meta property="og:description" content="Explore repositories, docs and releases by category.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jmanriquerios1.github.io/power-platform-resources/resources/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Resources | Jonathan Belenguer">
+    <meta name="twitter:description" content="Search Power Platform resources by category and technology.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Space+Grotesk:wght@500;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/tokens.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+  </head>
+  <body data-page="resources">
+    <header class="site-header">
+      <nav class="nav-wrap" aria-label="Primary">
+        <a class="brand" href="../index.html">
+          <strong>Jonathan Belenguer</strong>
+          <span>Connector de ideas</span>
+        </a>
+        <button id="menuToggle" class="menu-toggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
+        <div id="navLinks" class="nav-links" data-open="false">
+          <a href="../index.html">Home</a>
+          <a href="index.html" aria-current="page">Resources</a>
+          <a href="../tutorials/index.html">Tutorials</a>
+          <a href="../architecture/index.html">Architecture</a>
+          <a href="../speaking/index.html">Speaking</a>
+          <a href="../about/index.html">About</a>
+          <a href="https://github.com/jmanriquerios1" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="section">
+        <div class="section-wrap">
+          <div class="section-head">
+            <p class="eyebrow">// resources · filter</p>
+            <h1>Resources</h1>
+            <p>Search by resource name, technology, category or description.</p>
+          </div>
+          <form class="filters" role="search" aria-label="Filter resources" onsubmit="return false;">
+            <label>
+              <span class="meta">Search</span>
+              <input id="resourceSearch" class="input" type="search" placeholder="Search resources, technologies, categories...">
+            </label>
+            <label>
+              <span class="meta">Category</span>
+              <select id="categoryFilter" class="select" aria-label="Category filter"></select>
+            </label>
+          </form>
+          <p id="resourceCount" class="meta" aria-live="polite"></p>
+          <div id="resourceResults" class="grid grid-3" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-wrap">
+        <h2>Jonathan Belenguer</h2>
+        <p class="signature">// ideas que funcionan en producción, no en demos</p>
+      </div>
+    </footer>
+
+    <script src="../assets/js/resources.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+    <script src="../assets/js/navigation.js"></script>
+  </body>
+</html>

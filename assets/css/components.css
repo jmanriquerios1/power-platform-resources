@@ -1,0 +1,213 @@
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-meta);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.76rem;
+  color: var(--color-signal-blue);
+  margin-bottom: var(--space-2);
+}
+
+.eyebrow-light {
+  color: var(--color-blue-10);
+}
+
+.hero {
+  background: var(--color-slate);
+  color: var(--color-white);
+  padding-top: calc(var(--space-6) + 1rem);
+  padding-bottom: var(--space-6);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero h1 {
+  color: var(--color-white);
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  margin-bottom: var(--space-2);
+}
+
+.hero-subtitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+
+.hero p {
+  max-width: 60ch;
+  margin-bottom: var(--space-4);
+  color: var(--color-slate-100);
+}
+
+.hero-accent-blue {
+  position: absolute;
+  right: -5rem;
+  top: 2rem;
+  width: 16rem;
+  height: 16rem;
+  border-radius: 50%;
+  border: 2px solid rgba(37, 99, 235, 0.35);
+}
+
+.hero-accent-amber {
+  position: absolute;
+  left: 10%;
+  top: 5.5rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--color-spark-amber);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: var(--color-signal-blue);
+  color: var(--color-white);
+}
+
+.btn-primary:hover {
+  color: var(--color-white);
+  background: var(--color-blue-dark);
+}
+
+.btn-secondary {
+  border-color: var(--color-blue-30);
+  color: var(--color-blue-10);
+}
+
+.section-head {
+  max-width: 68ch;
+  margin-bottom: var(--space-4);
+}
+
+.section-head p {
+  color: var(--color-muted);
+  margin-top: var(--space-1);
+}
+
+.section-dark .section-head p {
+  color: var(--color-slate-300);
+}
+
+.card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  background: var(--color-white);
+  box-shadow: var(--shadow-soft);
+}
+
+.card h3 {
+  margin-bottom: var(--space-1);
+}
+
+.card p {
+  color: var(--color-muted);
+}
+
+.tag-row,
+.meta-row,
+.card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: var(--space-2);
+}
+
+.tag {
+  background: var(--color-blue-10);
+  color: var(--color-blue-dark);
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.8rem;
+  font-family: var(--font-meta);
+}
+
+.meta {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  font-family: var(--font-meta);
+}
+
+.featured-card {
+  border-color: var(--color-signal-blue);
+  position: relative;
+}
+
+.featured-card::before {
+  content: "featured";
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  font-family: var(--font-meta);
+  font-size: 0.72rem;
+  color: var(--color-amber-dark);
+  background: var(--color-amber-10);
+  border: 1px solid var(--color-amber-30);
+  border-radius: 999px;
+  padding: 0.05rem 0.4rem;
+}
+
+.category-card {
+  border: 1px solid var(--color-blue-20);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+.filters {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: 2fr 1fr;
+  margin-bottom: var(--space-3);
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid var(--color-slate-300);
+  border-radius: var(--radius-sm);
+  font: inherit;
+}
+
+.empty-state {
+  padding: var(--space-4);
+  text-align: center;
+  border: 1px dashed var(--color-slate-400);
+  border-radius: var(--radius-md);
+}
+
+.list-link {
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.signature {
+  margin-top: var(--space-2);
+  font-family: var(--font-meta);
+  color: var(--color-spark-amber-text);
+}
+
+.mt-3 {
+  margin-top: var(--space-3);
+}
