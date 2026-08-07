@@ -1,9 +1,9 @@
 const PORTAL_CATEGORY_CONFIG = Object.freeze([
-  { key: "pcf", label: "PCF Controls", topic: "pcf", route: "pcf" },
-  { key: "code-apps", label: "Code Apps", topic: "code-app", route: "code-apps" },
-  { key: "power-pages", label: "Power Pages SPA", topic: "power-pages-spa", route: "power-pages" },
-  { key: "plugins", label: "Dataverse Plugins", topic: "dataverse-plugin", route: "plugins" },
-  { key: "components", label: "Power Platform Components", topic: "power-platform-component", route: "components" }
+  { key: "pcf", label: "PCF Controls", route: "pcf" },
+  { key: "code-apps", label: "Code Apps", route: "code-apps" },
+  { key: "power-pages", label: "Power Pages SPA", route: "power-pages" },
+  { key: "plugins", label: "Dataverse Plugins", route: "plugins" },
+  { key: "components", label: "Power Platform Components", route: "components" }
 ]);
 
 const PORTAL_CATEGORY_LOOKUP = Object.fromEntries(
@@ -34,6 +34,15 @@ function getCatalogPath() {
 function routeForCategory(categoryKey) {
   const category = PORTAL_CATEGORY_LOOKUP[categoryKey];
   return category ? `${getSiteRoot()}resources/${category.route}/index.html` : `${getSiteRoot()}resources/index.html`;
+}
+
+function resolveUrl(value) {
+  if (!value) return "";
+  if (/^(?:[a-z]+:)?\/\//i.test(value) || value.startsWith("#") || value.startsWith("mailto:")) {
+    return value;
+  }
+
+  return `${getSiteRoot()}${String(value).replace(/^\/+/, "")}`;
 }
 
 function formatDate(value) {
@@ -107,6 +116,7 @@ window.portalCatalog = {
   getCatalogPath,
   getSiteRoot,
   routeForCategory,
+  resolveUrl,
   formatDate,
   humanizeTag,
   loadResourceCatalog
