@@ -21,7 +21,7 @@ It is the central entry point for:
 
 - **Static site**: HTML5, CSS3, Vanilla JavaScript
 - **Deployment**: GitHub Pages
-- **Scalable resources model**: data-driven rendering from `assets/js/resources.js`
+- **Scalable resources model**: data-driven rendering from `assets/data/resources.json`
 
 ## Design system
 
@@ -53,6 +53,11 @@ Typography:
   CONTRIBUTING.md
   CODE_OF_CONDUCT.md
   SECURITY.md
+  scripts/
+    generate-resources-json.mjs
+  .github/
+    workflows/
+      generate-resources-catalog.yml
 
   resources/
   tutorials/
@@ -68,17 +73,19 @@ Typography:
       layout.css
       responsive.css
     js/
-      resources.js
+      catalog.js
       search.js
       navigation.js
       main.js
+    data/
+      resources.json
     images/
 ```
 
 ## Local development
 
 1. Clone the repository.
-2. Open `index.html` directly, or serve locally:
+2. Serve the site locally:
 
 ```bash
 python -m http.server 8000
@@ -93,26 +100,33 @@ Then open `http://localhost:8000`.
 3. Choose the main branch and root folder (`/`).
 4. Save.
 
-## How to add a new resource
+## Publishing workflow
 
-Edit `assets/js/resources.js` and add a new object:
+No manual JavaScript or HTML edits are required to publish a new resource.
 
-```js
-{
-  title: "",
-  description: "",
-  category: "",
-  technologies: [],
-  repository: "",
-  documentation: "",
-  release: "",
-  stars: "--",
-  updated: "--",
-  featured: false
-}
+1. Create a GitHub repository under `jmanriquerios1`.
+2. Add **exactly one** primary topic:
+   - `pcf` → PCF Controls
+   - `code-app` → Code Apps
+   - `power-pages-spa` → Power Pages SPA
+   - `dataverse-plugin` → Dataverse Plugins
+   - `power-platform-component` → Power Platform Components
+3. Add a repository description and any secondary technology topics you want to display.
+4. Add a README.
+5. Optionally publish a GitHub Release.
+6. Wait for the scheduled workflow or run **Generate resource catalog** manually.
+
+The workflow calls the GitHub API, filters repositories by those five primary topics, and regenerates `assets/data/resources.json`. The home page, resources index, and category pages render directly from that generated JSON catalog.
+
+## Catalog generation
+
+Run the generator locally with a GitHub token:
+
+```bash
+GITHUB_TOKEN=your_token_here node scripts/generate-resources-json.mjs
 ```
 
-The card renders automatically in resources and home sections.
+The generated catalog is written to `assets/data/resources.json`.
 
 ## Contributing
 

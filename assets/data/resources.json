@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-08-07T16:42:23.594Z",
+  "owner": "jmanriquerios1",
+  "totalResources": 0,
+  "categories": [
+    {
+      "key": "pcf",
+      "label": "PCF Controls",
+      "topic": "pcf",
+      "route": "pcf",
+      "resourceCount": 0
+    },
+    {
+      "key": "code-apps",
+      "label": "Code Apps",
+      "topic": "code-app",
+      "route": "code-apps",
+      "resourceCount": 0
+    },
+    {
+      "key": "power-pages",
+      "label": "Power Pages SPA",
+      "topic": "power-pages-spa",
+      "route": "power-pages",
+      "resourceCount": 0
+    },
+    {
+      "key": "plugins",
+      "label": "Dataverse Plugins",
+      "topic": "dataverse-plugin",
+      "route": "plugins",
+      "resourceCount": 0
+    },
+    {
+      "key": "components",
+      "label": "Power Platform Components",
+      "topic": "power-platform-component",
+      "route": "components",
+      "resourceCount": 0
+    }
+  ],
+  "resources": []
+}

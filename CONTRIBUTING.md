@@ -18,5 +18,5 @@ Thanks for contributing to this Power Platform community portal.
 
 ## Resource additions
 
-Add new resources in `assets/js/resources.js`.
-Do not hardcode resource cards in HTML.
+Do not add or edit hardcoded resource definitions in JavaScript or HTML.
+Publish resources by creating repositories with exactly one supported primary topic, then let the catalog workflow regenerate `assets/data/resources.json`.

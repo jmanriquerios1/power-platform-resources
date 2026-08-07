@@ -9,7 +9,8 @@ function matchesSearch(resource, term) {
     resource.title,
     resource.description,
     resource.category,
-    resource.technologies.join(" ")
+    resource.language,
+    ...(Array.isArray(resource.tags) ? resource.tags : [])
   ]
     .join(" ")
     .toLowerCase();
@@ -17,28 +18,28 @@ function matchesSearch(resource, term) {
   return haystack.includes(term);
 }
 
-function matchesCategory(resource, category) {
-  if (!category || category === "All") return true;
-
-  if (category === "PCF") return resource.category.includes("PCF");
-  if (category === "Plugins") return resource.category.includes("Plugins");
-  if (category === "Power Pages") return resource.category.includes("Power Pages");
-
-  return resource.category === category;
+function matchesCategory(resource, categoryKey) {
+  if (!categoryKey || categoryKey === "all") return true;
+  return resource.categoryKey === categoryKey;
 }
 
-function initResourceSearch() {
+function initResourceSearch(catalog) {
   const searchInput = document.getElementById("resourceSearch");
   const categoryFilter = document.getElementById("categoryFilter");
   const totalResult = document.getElementById("resourceCount");
 
   if (!searchInput || !categoryFilter) return;
 
+  const initialCategory = document.body.dataset.categoryKey || "all";
+  if ([...categoryFilter.options].some((option) => option.value === initialCategory)) {
+    categoryFilter.value = initialCategory;
+  }
+
   const apply = () => {
     const term = normalize(searchInput.value.trim());
     const category = categoryFilter.value;
 
-    const filtered = resources.filter(
+    const filtered = catalog.resources.filter(
       (resource) => matchesSearch(resource, term) && matchesCategory(resource, category)
     );
 
@@ -54,4 +55,7 @@ function initResourceSearch() {
   apply();
 }
 
-document.addEventListener("DOMContentLoaded", initResourceSearch);
+document.addEventListener("DOMContentLoaded", () => {
+  (window.resourceCatalogPromise || Promise.resolve({ resources: [] }))
+    .then(initResourceSearch);
+});
