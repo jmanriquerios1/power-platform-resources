@@ -1,136 +1,133 @@
-# Jonathan Manrique Ríos Developer Portal
+# Jonathan Manrique Resources
 
-Open-source Power Platform portal for developers, consultants and architects.
+Open-source Power Platform resources for developers, consultants and architects.
 
 **Connector de ideas.**
 
 ## Purpose
 
-This repository hosts the GitHub Pages portal that organizes public Power Platform resources across multiple repositories.
+This repository contains the source code for the **Jonathan Manrique Resources Portal**.
 
-It is the central entry point for:
+The portal centralizes reusable Microsoft Power Platform resources and serves as the main entry point for the community.
 
-- repositories
-- documentation
-- releases
-- tutorials
-- architecture references
-- speaking resources
+It provides access to:
 
-## Architecture
+- PCF Controls
+- Code Apps
+- Power Pages SPA
+- Dataverse Plugins
+- Power Platform Components
+- Documentation
+- Tutorials
+- Architecture references
+- Community resources
 
-- **Static site**: HTML5, CSS3, Vanilla JavaScript
-- **Deployment**: GitHub Pages
-- **Scalable resources model**: data-driven rendering from `assets/data/resources.json`
+## Live Website
 
-## Design system
+The portal is available at:
 
-The portal uses custom brand tokens in `assets/css/tokens.css`:
+https://resources.bizzappshub.com
 
-- Ink scale (`--ink-900`, `--ink-800`, `--ink-700`)
-- Gray scale (`--gray-50`, `--gray-200`, `--gray-400`, `--gray-500`)
-- Brand blue (`--brand-blue-600`, `--brand-blue-700`, `--brand-blue-100`)
-- Accent gold (`--accent-gold-600`, `--accent-gold-100`)
-- Semantic (`--success-600`, `--danger-600`)
+## Resource Categories
 
-Typography:
+### PCF Controls
 
-- Space Grotesk (headings)
-- Inter (body)
-- Space Mono (eyebrows / metadata)
+Reusable Power Apps Component Framework controls ready for production environments.
 
-## Project structure
+### Code Apps
 
-```text
+Complete Code Apps samples, templates and reusable solutions.
+
+### Power Pages SPA
+
+Single Page Application implementations for Microsoft Power Pages.
+
+### Dataverse Plugins
+
+C# plugins, extension patterns and Dataverse business logic.
+
+### Power Platform Components
+
+Reusable components, libraries and utilities shared across Power Platform projects.
+
+## Technology Stack
+
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- GitHub Pages
+- GitHub Actions
+
+## Repository Structure
+
+```
 /
-  index.html
-  404.html
-  robots.txt
-  sitemap.xml
-  README.md
-  LICENSE
-  CONTRIBUTING.md
-  CODE_OF_CONDUCT.md
-  SECURITY.md
-  scripts/
-    generate-resources-json.mjs
-  .github/
-    workflows/
-      generate-resources-catalog.yml
-
-  resources/
-  tutorials/
-  architecture/
-  speaking/
-  about/
-
-  assets/
-    css/
-      tokens.css
-      base.css
-      components.css
-      layout.css
-      responsive.css
-    js/
-      catalog.js
-      search.js
-      navigation.js
-      main.js
-    data/
-      resources.json
-    images/
+│
+├── assets/
+├── resources/
+├── tutorials/
+├── architecture/
+├── speaking/
+├── about/
+├── scripts/
+├── .github/
+└── README.md
 ```
 
-## Local development
+## Publishing a New Resource
 
-1. Clone the repository.
-2. Serve the site locally:
+Publishing a new resource is straightforward.
+
+1. Create a new GitHub repository.
+2. Add one primary topic:
+
+- `pcf`
+- `code-app`
+- `power-pages-spa`
+- `dataverse-plugin`
+- `power-platform-component`
+
+3. Add a repository description.
+4. Create a README.
+5. Optionally publish a GitHub Release.
+6. Run the **Generate Resource Catalog** workflow.
+
+The portal will automatically discover and publish the new resource.
+
+## Local Development
+
+Clone the repository:
+
+```bash
+git clone https://github.com/jmanriquerios1/power-platform-resources.git
+```
+
+Run a local web server:
 
 ```bash
 python -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
+Open:
 
-## GitHub Pages deployment
-
-1. Go to **Settings > Pages**.
-2. Select deployment from branch.
-3. Choose the main branch and root folder (`/`).
-4. Save.
-
-## Publishing workflow
-
-No manual JavaScript or HTML edits are required to publish a new resource.
-
-1. Create a GitHub repository under `jmanriquerios1`.
-2. Add **exactly one** primary topic:
-   - `pcf` → PCF Controls
-   - `code-app` → Code Apps
-   - `power-pages-spa` → Power Pages SPA
-   - `dataverse-plugin` → Dataverse Plugins
-   - `power-platform-component` → Power Platform Components
-3. Add a repository description and any secondary technology topics you want to display.
-4. Add a README.
-5. Optionally publish a GitHub Release.
-6. Wait for the scheduled workflow or run **Generate resource catalog** manually.
-
-The workflow calls the GitHub API, filters repositories by those five primary topics, and regenerates `assets/data/resources.json`. The home page, resources index, and category pages render directly from that generated JSON catalog.
-
-## Catalog generation
-
-Run the generator locally with a GitHub token:
-
-```bash
-GITHUB_TOKEN=your_token_here node scripts/generate-resources-json.mjs
+```
+http://localhost:8000
 ```
 
-The generated catalog is written to `assets/data/resources.json`.
+## GitHub Pages
+
+Deployment is handled automatically through GitHub Pages.
+
+The live portal is published from the **main** branch.
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md).
+Contributions are welcome.
+
+Please read **CONTRIBUTING.md** before opening a Pull Request.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+This project is licensed under the MIT License.
+
+See **LICENSE** for more information.
