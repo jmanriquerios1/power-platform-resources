@@ -1,0 +1,287 @@
+/* ============================================================
+   REDESIGN OVERRIDES — carga DESPUÉS de todas las demás CSS
+   ============================================================ */
+
+:root{
+  /* Paleta con contraste AA verificado */
+  --rd-blue:        #2563eb;
+  --rd-blue-hover:  #1d4ed8;
+  --rd-amber:       #d97706;
+
+  --rd-ink:         #0f172a;   /* texto principal claro */
+  --rd-body:        #334155;   /* texto de cuerpo (7:1 sobre blanco) */
+  --rd-muted:       #556074;   /* secundario legible (>4.5:1) */
+
+  --rd-surface:     #ffffff;
+  --rd-surface-2:   #f6f8fc;   /* secciones "light" */
+  --rd-border:      #e3e8f0;
+  --rd-border-strong:#cfd6e2;
+
+  /* Dark surfaces (hero / section-dark) */
+  --rd-dark:        #0b1220;
+  --rd-dark-2:      #111a2e;
+  --rd-on-dark:     #e8edf6;
+  --rd-on-dark-mut: #9fb0cc;
+
+  --rd-shadow-sm: 0 1px 2px rgba(15,23,42,.06);
+  --rd-shadow:    0 6px 20px rgba(15,23,42,.08);
+  --rd-shadow-lg: 0 18px 48px rgba(15,23,42,.14);
+  --rd-radius:    14px;
+  --rd-max:       1160px;
+}
+
+/* Suaviza fuentes y activa transición global sutil */
+body{
+  color: var(--rd-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a, .btn, .card, .category-card, .tag, .nav-links a{
+  transition: color .18s ease, background-color .18s ease,
+              border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+/* ---------- Tipografía y jerarquía ---------- */
+h1,h2,h3{ color: var(--rd-ink); letter-spacing:-.01em; }
+h2{ font-size: clamp(1.6rem, 2.4vw, 2.1rem); line-height:1.15; }
+h3{ font-size: 1.15rem; }
+p{ line-height:1.65; }
+
+/* Los "eyebrows" (// technologies · index): legibles y con estilo */
+.eyebrow, .eyebrow-light{
+  color: var(--rd-blue);
+  font-weight:600;
+  letter-spacing:.12em;
+  opacity:1;
+}
+.section-dark .eyebrow, .hero .eyebrow{ color:#7aa2ff; }
+
+.section-head p, .hero-subtitle + *{ color: var(--rd-muted); }
+
+/* ============================================================
+   NAVEGACIÓN
+   ============================================================ */
+.site-header{
+  background: rgba(11,18,32,.92);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.nav-wrap{ max-width: var(--rd-max); }
+
+.brand strong{ color:#fff; }
+.brand span{ color: var(--rd-on-dark-mut); }
+
+.nav-links a{
+  color: var(--rd-on-dark);
+  font-weight:500;
+  padding:.4rem .6rem;
+  border-radius:8px;
+}
+.nav-links a:hover{ color:#fff; background: rgba(255,255,255,.08); }
+
+/* Enlace activo claramente marcado */
+.nav-links a[aria-current="page"]{
+  color:#fff;
+  background: rgba(37,99,235,.22);
+  box-shadow: inset 0 -2px 0 var(--rd-blue);
+}
+
+.nav-dropdown-trigger{
+  color: var(--rd-on-dark);
+  font-weight:500;
+  background:transparent;
+  border:0;
+  padding:.4rem .6rem;
+  border-radius:8px;
+  cursor:pointer;
+}
+.nav-dropdown-trigger:hover{ color:#fff; background: rgba(255,255,255,.08); }
+
+/* PANEL DESPLEGABLE — fondo SÓLIDO (arreglo de transparencia) */
+.nav-dropdown-panel{
+  background: #0f1a30 !important;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.5);
+  padding:.4rem;
+  min-width:230px;
+}
+.nav-dropdown-panel a{
+  display:block;
+  color: var(--rd-on-dark);
+  padding:.6rem .8rem;
+  border-radius:8px;
+  white-space:nowrap;
+}
+.nav-dropdown-panel a:hover{ background: rgba(37,99,235,.25); color:#fff; }
+
+/* Buscador */
+.nav-search input, input[type="search"]{
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  border-radius:10px;
+  padding:.55rem .9rem;
+}
+.nav-search input::placeholder{ color: var(--rd-on-dark-mut); }
+.nav-search input:focus{
+  outline:none;
+  border-color: var(--rd-blue);
+  box-shadow:0 0 0 3px rgba(37,99,235,.35);
+}
+
+.theme-toggle{
+  background: rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:10px;
+  width:40px;height:40px;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.theme-toggle:hover{ background: rgba(255,255,255,.16); }
+
+/* Selector de idioma (lo inyecta i18n.js) */
+.lang-switch{
+  display:inline-flex; gap:2px;
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:10px; padding:2px;
+}
+.lang-switch button{
+  border:0; background:transparent; cursor:pointer;
+  color: var(--rd-on-dark-mut);
+  font-size:.8rem; font-weight:600;
+  padding:.35rem .6rem; border-radius:8px;
+}
+.lang-switch button[aria-pressed="true"]{ background: var(--rd-blue); color:#fff; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgba(37,99,235,.18), transparent 60%),
+    linear-gradient(180deg, var(--rd-dark), var(--rd-dark-2));
+  color: var(--rd-on-dark);
+  padding: clamp(4rem, 8vw, 7rem) 1.5rem;
+}
+.hero h1{ color:#fff; font-size: clamp(2.6rem, 6vw, 4.4rem); line-height:1.02; }
+.hero-subtitle{ color: var(--rd-on-dark); font-weight:500; }
+.hero p{ color: var(--rd-on-dark-mut); max-width:52ch; }
+
+/* ============================================================
+   BOTONES
+   ============================================================ */
+.btn{ border-radius:10px; font-weight:600; padding:.8rem 1.4rem; }
+.btn-primary{ background: var(--rd-blue); color:#fff; border:1px solid var(--rd-blue); }
+.btn-primary:hover{ background: var(--rd-blue-hover); transform:translateY(-1px); box-shadow:var(--rd-shadow); }
+.btn-secondary{
+  background:transparent; color:#fff;
+  border:1px solid rgba(255,255,255,.35);
+}
+.btn-secondary:hover{ border-color:#fff; background:rgba(255,255,255,.08); }
+/* En secciones claras el secundario invierte */
+.section-light .btn-secondary, .section .btn-secondary{
+  color: var(--rd-ink); border-color: var(--rd-border-strong);
+}
+.section-light .btn-secondary:hover, .section .btn-secondary:hover{
+  border-color: var(--rd-blue); color: var(--rd-blue); background:#fff;
+}
+
+/* ============================================================
+   STATS BAR — sutil, no un bloque negro flotante
+   ============================================================ */
+.stats-bar{
+  max-width: var(--rd-max);
+  margin: -2.5rem auto 0;
+  background:#fff;
+  color: var(--rd-ink);
+  border:1px solid var(--rd-border);
+  border-radius: var(--rd-radius);
+  box-shadow: var(--rd-shadow-lg);
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+}
+.stats-bar .stat > *:first-child{ color: var(--rd-blue); font-size:2.2rem; }
+.stats-bar .stat > *:last-child{ color: var(--rd-muted); letter-spacing:.06em; }
+
+/* ============================================================
+   SECCIONES — transición suave entre claras/oscuras
+   ============================================================ */
+.section{ padding: clamp(3.5rem, 7vw, 6rem) 1.5rem; background: var(--rd-surface); }
+.section-wrap{ max-width: var(--rd-max); margin-inline:auto; }
+.section-light{ background: var(--rd-surface-2); }
+.section-dark{
+  background: linear-gradient(180deg, var(--rd-dark-2), var(--rd-dark));
+  color: var(--rd-on-dark);
+}
+.section-dark h2{ color:#fff; }
+.section-dark p{ color: var(--rd-on-dark-mut); }
+.section-head{ margin-bottom: 2.5rem; max-width:60ch; }
+.section-head p{ font-size:1.05rem; }
+
+/* ============================================================
+   TARJETAS — bordes y sombras sutiles, hover elegante
+   ============================================================ */
+.card, .category-card{
+  background:#fff;
+  border:1px solid var(--rd-border);
+  border-radius: var(--rd-radius);
+  box-shadow: var(--rd-shadow-sm);
+  padding:1.5rem;
+}
+.card:hover, .category-card:hover{
+  border-color: var(--rd-border-strong);
+  box-shadow: var(--rd-shadow);
+  transform: translateY(-3px);
+}
+.card h3, .category-card h3, .category-card-link{ color: var(--rd-ink); }
+.card p{ color: var(--rd-muted); }
+
+/* Tags legibles (antes casi invisibles) */
+.tag{
+  background:#eef3ff;
+  color:#1e40af;
+  border:1px solid #dbe4fb;
+  border-radius:999px;
+  padding:.28rem .7rem;
+  font-size:.8rem;
+  font-weight:500;
+}
+.tag-row{ gap:.5rem; }
+
+/* Meta (★ 0 · updated) más legible */
+.meta, .meta-row{ color: var(--rd-muted); }
+
+/* Enlaces de tarjeta */
+.card-links a, .list-link{ color: var(--rd-blue); font-weight:600; }
+.card-links a:hover, .list-link:hover{ color: var(--rd-blue-hover); text-decoration:underline; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{ background: var(--rd-dark); color: var(--rd-on-dark-mut); border-top:1px solid rgba(255,255,255,.08); }
+.footer h3, .footer h2{ color:#fff; }
+.footer .signature{ color:#fff; }
+.footer a{ color: var(--rd-on-dark-mut); }
+.footer a:hover{ color:#fff; }
+
+/* ============================================================
+   ACCESIBILIDAD: foco visible en todo elemento interactivo
+   ============================================================ */
+a:focus-visible, button:focus-visible, input:focus-visible{
+  outline:2px solid var(--rd-blue);
+  outline-offset:2px;
+  border-radius:6px;
+}
+
+/* Respeta usuarios con movimiento reducido */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; animation:none !important; }
+}
+
+/* ============================================================
+   RESPONSIVE fino
+   ============================================================ */
+@media (max-width: 720px){
+  .stats-bar{ margin-top:-1.5rem; grid-template-columns:repeat(2,1fr); gap:1.25rem; }
+  .hero{ padding-top:3rem; }
+}
