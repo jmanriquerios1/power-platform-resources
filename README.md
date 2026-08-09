@@ -94,6 +94,15 @@ Publishing a new resource is straightforward.
 
 The portal will automatically discover and publish the new resource.
 
+## Workflow Configuration
+
+The `generate-resources-catalog` workflow now mirrors `assets/data/resources.json`
+to `jmanriquerios1/power-platform-public-resources` so the public repo keeps the
+catalog consumed during deployment.
+
+To enable that sync, configure the `PUBLIC_RESOURCES_REPO_SYNC_TOKEN` repository
+secret with write access to `jmanriquerios1/power-platform-public-resources`.
+
 ## Local Development
 
 Clone the repository:
