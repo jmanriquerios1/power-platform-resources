@@ -61,13 +61,15 @@ jobs:
               -H "Authorization: ******" \
               -H "Accept: application/vnd.github.raw" \
               -o assets/data/resources.json \
-              "${CATALOG_URL}"
+              "${CATALOG_URL}" \
+            || echo "Remote catalog unavailable (authenticated); using local fallback."
           else
             echo "Downloading catalog without authentication (public repo)..."
-            curl -fsSL -o assets/data/resources.json "${CATALOG_URL}"
+            curl -fsSL -o assets/data/resources.json "${CATALOG_URL}" \
+            || echo "Remote catalog unavailable; using local fallback."
           fi
 
-          echo "Catalog downloaded:"
+          echo "Catalog in use:"
           node -e "
             const d = require('./assets/data/resources.json');
             console.log('  resources:', d.resources?.length ?? 0);
