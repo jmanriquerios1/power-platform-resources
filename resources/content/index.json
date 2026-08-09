@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-09T16:16:59.040Z",
+  "generatedAt": "2026-08-09T17:17:25.084Z",
   "blog": [
     {
       "title": "La IA entra en era del coste consciente",
@@ -12,12 +12,124 @@
   ],
   "videos": [
     {
-      "title": "Video de YouTube (85mk7yqPMuU)",
+      "title": "Paginas Descriptivas Generadas con Codigo impulsado por IA",
       "url": "https://www.youtube.com/watch?v=85mk7yqPMuU",
-      "date": "2026-08-09",
-      "summary": "Video inicial del canal @JonathanManriqueRios. Nota: en este entorno no fue posible verificar automáticamente título y fecha de publicación desde YouTube por restricciones de conectividad externa.",
-      "slug": "2026-08-09-85mk7yqPMuU",
-      "source": "videos/2026-08-09-85mk7yqPMuU.md"
+      "date": "2026-04-22",
+      "summary": "El uso de herramientas de generación de código de IA con páginas generativas proporciona un enfoque de desarrollo alternativo que complementa la experiencia basada en la interfaz de usuario en Power Apps (make.powerapps.com). Este enfoque de código primero está diseñado para desarrolladores y creadores técnicos que prefieren trabajar con herramientas de desarrollo locales y flujos de trabajo basados en la CLI.",
+      "slug": "2026-04-22-85mk7yqPMuU",
+      "source": "videos/2026-04-22-85mk7yqPMuU.md"
+    },
+    {
+      "title": "Paginas Generativas Lenguaje Natural",
+      "url": "https://www.youtube.com/watch?v=_SLxzk5rqpk",
+      "date": "2026-04-16",
+      "summary": "Descubre cómo crear páginas generativas en Power Apps usando lenguaje natural. En este video te muestro cómo la IA te ayuda a diseñar páginas funcionales para aplicaciones basadas en modelos, indicando tablas de Dataverse e incluso usando una imagen como referencia. Una forma más rápida e inteligente de construir soluciones de negocio con Power Platform. #powerapps #powerplatform #ia #dataverse #copilot",
+      "slug": "2026-04-16-_SLxzk5rqpk",
+      "source": "videos/2026-04-16-_SLxzk5rqpk.md"
+    },
+    {
+      "title": "AI, Copilot, Agente in Power Apps Model Driven User",
+      "url": "https://www.youtube.com/watch?v=vxIg5zU8wQE",
+      "date": "2026-04-13",
+      "summary": "Como los agentes, ia, copilot nos ayuda en nuestras interfaz de usuarios a tener una experiencia mucho más potente",
+      "slug": "2026-04-13-vxIg5zU8wQE",
+      "source": "videos/2026-04-13-vxIg5zU8wQE.md"
+    },
+    {
+      "title": "Your business apps, now part of every conversation",
+      "url": "https://www.youtube.com/watch?v=YsyActEtt5I",
+      "date": "2026-04-13",
+      "summary": "Think about the last time you needed business data mid-flow—building a PowerPoint and needing the latest account details or drafting a follow-up email and wanting to confirm a record before hitting send. You had to open a separate tab, navigate to the right view, find what you needed, and switch back – unnecessary context switching. That’s the gap we’re closing. Starting today in preview, you can engage your model-driven apps in Microsoft 365 Copilot — giving users conversational access to their business data and giving makers a way to bring their app’s value into the flow of work. The connection is made through your app’s MCP server—a lightweight setup in Power Apps that’s automatically created and configured for your model‑driven app, registering it as an agent in Copilot and making its data available as conversational capabilities. The experience is built around three capabilities: out‑of‑the‑box grids and forms available now, and custom tools coming soon.",
+      "slug": "2026-04-13-YsyActEtt5I",
+      "source": "videos/2026-04-13-YsyActEtt5I.md"
+    },
+    {
+      "title": "Onbording IT",
+      "url": "https://www.youtube.com/watch?v=9TbUR-9j3Cg",
+      "date": "2026-03-30",
+      "summary": "Proceso de Onbording de IT para nuevos usuarios asignando licencias y creando usuarios en Entra ID",
+      "slug": "2026-03-30-9TbUR-9j3Cg",
+      "source": "videos/2026-03-30-9TbUR-9j3Cg.md"
+    },
+    {
+      "title": "Agentificando Proceso de Visitas Comerciales",
+      "url": "https://www.youtube.com/watch?v=EmJ8e5ZhggU",
+      "date": "2026-03-09",
+      "summary": "Cuando un equipo comercial debe realizar visitas in situ y despues rellenar el CRM, comienzan los vacíos Te cuento como un agente nos ayuda",
+      "slug": "2026-03-09-EmJ8e5ZhggU",
+      "source": "videos/2026-03-09-EmJ8e5ZhggU.md"
+    },
+    {
+      "title": "Agentificando Proceso Contratación",
+      "url": "https://www.youtube.com/watch?v=celTzX4Lh0o",
+      "date": "2026-03-02",
+      "summary": "Como podemos gestionar un proceso de buscar perfiles de candidatos usando un agente de Copilot Studio",
+      "slug": "2026-03-02-celTzX4Lh0o",
+      "source": "videos/2026-03-02-celTzX4Lh0o.md"
+    },
+    {
+      "title": "Agentificando un proceso de CRM",
+      "url": "https://www.youtube.com/watch?v=JdmhNvYL4T8",
+      "date": "2026-02-25",
+      "summary": "Agentificando un proceso de CRM (salesforce) usando Copilot Studio",
+      "slug": "2026-02-25-JdmhNvYL4T8",
+      "source": "videos/2026-02-25-JdmhNvYL4T8.md"
+    },
+    {
+      "title": "Agentificando un proceso de negocio de Ticketing",
+      "url": "https://www.youtube.com/watch?v=xAA4zwfkDok",
+      "date": "2026-02-16",
+      "summary": "Hoy casi todas las organizaciones ya tienen procesos digitalizados con Power Platform (Model-driven apps, Dataverse, aprobaciones, automatizaciones). La pregunta es: ¿y si el siguiente salto no es otra pantalla… sino un agente? En este video muestro cómo una app de Power Apps Model-Driven que ya soporta un proceso de negocio puede agentificarse para ofrecer una experiencia totalmente distinta: ✅ el usuario pide en lenguaje natural ✅ el agente guía, valida y ejecuta acciones ✅ todo queda gobernado y trazable en Dataverse ✅ y se integra con Microsoft 365 👉 Mira el video y dime: ¿qué proceso te gustaría agentificar primero?",
+      "slug": "2026-02-16-xAA4zwfkDok",
+      "source": "videos/2026-02-16-xAA4zwfkDok.md"
+    },
+    {
+      "title": "MCP en Agente de Copilot Studio Parte 1",
+      "url": "https://www.youtube.com/watch?v=wA6bkdG1qiU",
+      "date": "2025-10-13",
+      "summary": "Veremos como los MCP que tenemos disponibles en Copilot Studio nos ayudan en nuestros procesos de negocio",
+      "slug": "2025-10-13-wA6bkdG1qiU",
+      "source": "videos/2025-10-13-wA6bkdG1qiU.md"
+    },
+    {
+      "title": "Tools Promp Copilot Studio",
+      "url": "https://www.youtube.com/watch?v=7tv1sPjqVDE",
+      "date": "2025-10-12",
+      "summary": "Como las Herramientas Prompt te pueden ayudar trabajar con Dataverse",
+      "slug": "2025-10-12-7tv1sPjqVDE",
+      "source": "videos/2025-10-12-7tv1sPjqVDE.md"
+    },
+    {
+      "title": "Custom Prompt Dataverse",
+      "url": "https://www.youtube.com/watch?v=Kt9zFsFaoLs",
+      "date": "2025-09-14",
+      "summary": "✨ ¡Adiós a los flujos complejos, hola al lenguaje natural en Dataverse! ✨ Hoy quiero compartir algo que me tiene realmente entusiasmado 😎👇 1️⃣ La creación de registros en Dataverse usando lenguaje natural ahora sí es posible. Se acabó pelear con campos interminables o depender de acciones complicadas en Copilot Studio. 2️⃣ Solo necesitas activar el Code Interpreter 🔑. 3️⃣ Escribes tu prompt en lenguaje natural, mapeas los campos de tu tabla en Dataverse 🗂️. 4️⃣ Lo agregas como una Tool en tu agente 🤖. 5️⃣ ¡Y listo! Estamos más cerca que nunca de interactuar en lenguaje natural con Copilot Studio y dejar atrás la dependencia de Power Automate para lo más básico. 🚀 👉 Mira el siguiente video donde te muestro el paso a paso completo y cómo empezar a usarlo desde ya.",
+      "slug": "2025-09-14-Kt9zFsFaoLs",
+      "source": "videos/2025-09-14-Kt9zFsFaoLs.md"
+    },
+    {
+      "title": "MCP Buscar reuniones",
+      "url": "https://www.youtube.com/watch?v=27wljLr4PUE",
+      "date": "2025-09-14",
+      "summary": "Sin resumen disponible en el feed RSS público de YouTube.",
+      "slug": "2025-09-14-27wljLr4PUE",
+      "source": "videos/2025-09-14-27wljLr4PUE.md"
+    },
+    {
+      "title": "MCP Calendario Agendar reuniones",
+      "url": "https://www.youtube.com/watch?v=4x50W2aJdyw",
+      "date": "2025-09-14",
+      "summary": "Sin resumen disponible en el feed RSS público de YouTube.",
+      "slug": "2025-09-14-4x50W2aJdyw",
+      "source": "videos/2025-09-14-4x50W2aJdyw.md"
+    },
+    {
+      "title": "MCP Contactos agregar Contactos",
+      "url": "https://www.youtube.com/watch?v=rA_A8fx-XMs",
+      "date": "2025-09-14",
+      "summary": "Sin resumen disponible en el feed RSS público de YouTube.",
+      "slug": "2025-09-14-rA_A8fx-XMs",
+      "source": "videos/2025-09-14-rA_A8fx-XMs.md"
     }
   ]
 }
