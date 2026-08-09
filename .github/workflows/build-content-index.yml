@@ -1,0 +1,51 @@
+name: Build content index
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - resources/content/blog/**
+      - resources/content/videos/**
+      - scripts/build-content-index.js
+      - scripts/import-youtube-rss.js
+      - .github/workflows/build-content-index.yml
+  schedule:
+    - cron: "0 */12 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.event_name != 'push' || github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Import YouTube RSS
+        run: node scripts/import-youtube-rss.js
+
+      - name: Build content index
+        run: node scripts/build-content-index.js
+
+      - name: Commit content updates
+        run: |
+          if git diff --quiet -- resources/content/videos resources/content/index.json; then
+            echo "No content changes detected."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add resources/content/videos resources/content/index.json
+          git commit -m "chore: refresh blog/video content index [skip ci]"
+          git push

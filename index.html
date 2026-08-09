@@ -381,26 +381,11 @@
             <h2>Entradas de Blog</h2>
             <p>Insights, aprendizajes y guías accionables para makers, devs y arquitectos.</p>
           </header>
-          <div class="grid grid-3">
-            <article class="card">
-              <p class="meta">ALM · Governance</p>
-              <h3>Cómo estructurar un ALM robusto en Power Platform</h3>
-              <p>Buenas prácticas para versionado, entornos y despliegues confiables.</p>
-              <a class="btn btn-secondary" href="#" aria-label="Leer entrada ALM robusto">Leer entrada</a>
-            </article>
-            <article class="card">
-              <p class="meta">Power Pages · Frontend</p>
-              <h3>Arquitectura SPA en Power Pages sin perder mantenibilidad</h3>
-              <p>Estrategias para escalar componentes y performance en experiencias complejas.</p>
-              <a class="btn btn-secondary" href="#" aria-label="Leer entrada sobre SPA en Power Pages">Leer entrada</a>
-            </article>
-            <article class="card">
-              <p class="meta">Dataverse · Plugins</p>
-              <h3>Patrones de plugins para lógica de negocio desacoplada</h3>
-              <p>Cuándo usar pre/post operation, validaciones y manejo de errores eficiente.</p>
-              <a class="btn btn-secondary" href="#" aria-label="Leer entrada de patrones de plugins">Leer entrada</a>
-            </article>
-          </div>
+          <div id="blogStatus" aria-live="polite"></div>
+          <div class="grid grid-3" id="blogGrid"></div>
+          <p style="margin-top:.9rem;">
+            <button class="btn btn-secondary" id="blogMore" type="button" hidden>Ver más</button>
+          </p>
         </div>
       </section>
 
@@ -411,26 +396,11 @@
             <h2>Videos (YouTube)</h2>
             <p>Contenido audiovisual para aprender más rápido con demos y explicaciones prácticas.</p>
           </header>
-          <div class="grid grid-3">
-            <article class="card">
-              <p class="meta">YouTube</p>
-              <h3>Introducción a arquitectura Power Platform en producción</h3>
-              <p>Visión general para definir una base técnica sólida.</p>
-              <a class="btn btn-secondary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Ver en YouTube</a>
-            </article>
-            <article class="card">
-              <p class="meta">YouTube</p>
-              <h3>PCF desde cero: estructura, build y despliegue</h3>
-              <p>Paso a paso para crear controles reutilizables con enfoque real.</p>
-              <a class="btn btn-secondary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Ver en YouTube</a>
-            </article>
-            <article class="card">
-              <p class="meta">YouTube</p>
-              <h3>Power Pages + Dataverse: patrón escalable</h3>
-              <p>Cómo integrar frontend moderno con seguridad y performance.</p>
-              <a class="btn btn-secondary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Ver en YouTube</a>
-            </article>
-          </div>
+          <div id="videosStatus" aria-live="polite"></div>
+          <div class="grid grid-3" id="videosGrid"></div>
+          <p style="margin-top:.9rem;">
+            <button class="btn btn-secondary" id="videosMore" type="button" hidden>Ver más</button>
+          </p>
         </div>
       </section>
 
@@ -479,12 +449,41 @@
         { name: 'Architecture Hub', category: 'components', desc: 'Patrones técnicos para soluciones de larga vida.', url: 'architecture/index.html' }
       ];
 
+      const CONTENT_BATCH_SIZE = 6;
+      const ARTICLE_FALLBACK_URL = 'https://www.linkedin.com/in/jonathan-manrique-rios/recent-activity/articles/';
+      const YOUTUBE_FALLBACK_URL = 'https://www.youtube.com/@JonathanManriqueRios';
+
       const grid = document.getElementById('resourcesGrid');
       const searchInput = document.getElementById('searchInput');
       const filterCategory = document.getElementById('filterCategory');
       const resultCount = document.getElementById('resultCount');
       const menuBtn = document.getElementById('menuBtn');
       const mainNav = document.getElementById('mainNav');
+
+      const contentSections = {
+        blog: {
+          label: 'Blog',
+          fallbackUrl: ARTICLE_FALLBACK_URL,
+          fallbackText: 'Ir a artículos en LinkedIn',
+          cta: 'Leer entrada',
+          statusEl: document.getElementById('blogStatus'),
+          gridEl: document.getElementById('blogGrid'),
+          moreBtnEl: document.getElementById('blogMore'),
+          items: [],
+          shown: 0
+        },
+        videos: {
+          label: 'YouTube',
+          fallbackUrl: YOUTUBE_FALLBACK_URL,
+          fallbackText: 'Ir al canal de YouTube',
+          cta: 'Ver en YouTube',
+          statusEl: document.getElementById('videosStatus'),
+          gridEl: document.getElementById('videosGrid'),
+          moreBtnEl: document.getElementById('videosMore'),
+          items: [],
+          shown: 0
+        }
+      };
 
       function renderResources(items) {
         grid.innerHTML = '';
@@ -505,16 +504,168 @@
       function applyFilter() {
         const term = searchInput.value.trim().toLowerCase();
         const cat = filterCategory.value;
-        const filtered = resources.filter(r => {
-          const textMatch = r.name.toLowerCase().includes(term) || r.desc.toLowerCase().includes(term) || r.category.toLowerCase().includes(term);
-          const catMatch = cat === 'all' ? true : r.category === cat;
+        const filtered = resources.filter((resource) => {
+          const textMatch = resource.name.toLowerCase().includes(term)
+            || resource.desc.toLowerCase().includes(term)
+            || resource.category.toLowerCase().includes(term);
+          const catMatch = cat === 'all' ? true : resource.category === cat;
           return textMatch && catMatch;
         });
+
         renderResources(filtered);
+      }
+
+      function sortByDateDesc(items) {
+        return [...items].sort((a, b) => {
+          const dateA = Number.isFinite(Date.parse(a.date)) ? Date.parse(a.date) : 0;
+          const dateB = Number.isFinite(Date.parse(b.date)) ? Date.parse(b.date) : 0;
+
+          if (dateA !== dateB) {
+            return dateB - dateA;
+          }
+
+          return String(a.title || '').localeCompare(String(b.title || ''), 'es', { sensitivity: 'base' });
+        });
+      }
+
+      function formatDate(date) {
+        const parsed = new Date(`${date}T00:00:00Z`);
+        if (!Number.isFinite(parsed.getTime())) {
+          return date;
+        }
+
+        return new Intl.DateTimeFormat('es-ES', { dateStyle: 'medium', timeZone: 'UTC' }).format(parsed);
+      }
+
+      function clearElement(element) {
+        while (element.firstChild) {
+          element.removeChild(element.firstChild);
+        }
+      }
+
+      function setSectionStatus(section, type, message) {
+        clearElement(section.statusEl);
+        section.statusEl.hidden = false;
+
+        const statusCard = document.createElement('article');
+        statusCard.className = 'card';
+
+        const meta = document.createElement('p');
+        meta.className = 'meta';
+        meta.textContent = section.label;
+
+        const paragraph = document.createElement('p');
+        paragraph.textContent = message;
+
+        const link = document.createElement('a');
+        link.className = 'btn btn-secondary';
+        link.href = section.fallbackUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = section.fallbackText;
+        link.setAttribute('aria-label', `${section.fallbackText} (abre en una nueva pestaña)`);
+
+        statusCard.append(meta, paragraph);
+        if (type !== 'loading') {
+          statusCard.append(link);
+        }
+
+        section.statusEl.appendChild(statusCard);
+      }
+
+      function createContentCard(section, item) {
+        const card = document.createElement('article');
+        card.className = 'card';
+
+        const meta = document.createElement('p');
+        meta.className = 'meta';
+        meta.textContent = `${section.label} · ${formatDate(String(item.date || ''))}`;
+
+        const title = document.createElement('h3');
+        title.textContent = String(item.title || 'Sin título');
+
+        const summary = document.createElement('p');
+        summary.textContent = String(item.summary || 'Sin resumen disponible.');
+
+        const link = document.createElement('a');
+        link.className = 'btn btn-secondary';
+        link.href = String(item.url || section.fallbackUrl);
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = section.cta;
+        link.setAttribute('aria-label', `${section.cta}: ${title.textContent} (abre en una nueva pestaña)`);
+
+        card.append(meta, title, summary, link);
+        return card;
+      }
+
+      function renderNextBatch(sectionName) {
+        const section = contentSections[sectionName];
+        const start = section.shown;
+        const end = Math.min(start + CONTENT_BATCH_SIZE, section.items.length);
+
+        for (let index = start; index < end; index += 1) {
+          section.gridEl.appendChild(createContentCard(section, section.items[index]));
+        }
+
+        section.shown = end;
+        section.moreBtnEl.hidden = section.shown >= section.items.length;
+      }
+
+      function initializeSection(sectionName, entries) {
+        const section = contentSections[sectionName];
+        clearElement(section.gridEl);
+        section.items = sortByDateDesc(entries);
+        section.shown = 0;
+
+        if (section.items.length === 0) {
+          setSectionStatus(section, 'empty', `No hay entradas disponibles por ahora en ${section.label}.`);
+          section.moreBtnEl.hidden = true;
+          return;
+        }
+
+        section.statusEl.hidden = true;
+        renderNextBatch(sectionName);
+      }
+
+      function hasValidEntry(entry) {
+        return entry
+          && typeof entry === 'object'
+          && typeof entry.title === 'string'
+          && typeof entry.url === 'string'
+          && typeof entry.date === 'string'
+          && typeof entry.summary === 'string';
+      }
+
+      async function loadContentIndex() {
+        setSectionStatus(contentSections.blog, 'loading', 'Cargando entradas de blog...');
+        setSectionStatus(contentSections.videos, 'loading', 'Cargando videos...');
+
+        try {
+          const response = await fetch('resources/content/index.json', { cache: 'no-store' });
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+
+          const payload = await response.json();
+          const blogItems = Array.isArray(payload.blog) ? payload.blog.filter(hasValidEntry) : [];
+          const videoItems = Array.isArray(payload.videos) ? payload.videos.filter(hasValidEntry) : [];
+
+          initializeSection('blog', blogItems);
+          initializeSection('videos', videoItems);
+        } catch (error) {
+          setSectionStatus(contentSections.blog, 'error', 'No se pudo cargar el contenido del blog automáticamente.');
+          setSectionStatus(contentSections.videos, 'error', 'No se pudo cargar el contenido de videos automáticamente.');
+          contentSections.blog.moreBtnEl.hidden = true;
+          contentSections.videos.moreBtnEl.hidden = true;
+        }
       }
 
       searchInput.addEventListener('input', applyFilter);
       filterCategory.addEventListener('change', applyFilter);
+
+      contentSections.blog.moreBtnEl.addEventListener('click', () => renderNextBatch('blog'));
+      contentSections.videos.moreBtnEl.addEventListener('click', () => renderNextBatch('videos'));
 
       menuBtn.addEventListener('click', () => {
         const open = mainNav.getAttribute('data-open') === 'true';
@@ -523,6 +674,7 @@
       });
 
       renderResources(resources);
+      loadContentIndex();
     </script>
   </body>
 </html>
