@@ -11,7 +11,7 @@ const YOUTUBE_WATCH_URL = 'https://www.youtube.com/watch?v=';
 const INITIAL_VIDEO_ID = '85mk7yqPMuU';
 const INITIAL_VIDEO_URL = `${YOUTUBE_WATCH_URL}${INITIAL_VIDEO_ID}`;
 
-const CHANNEL_ID_REGEX = /UC[0-9A-Za-z_-]{22}/;
+const CHANNEL_ID_REGEX = /^UC[0-9A-Za-z_-]{22}$/;
 
 function toIsoDate(value) {
   if (!value) {
@@ -55,12 +55,18 @@ function extractLinkHref(xml) {
 }
 
 async function fetchText(url) {
-  const response = await fetch(url, {
-    headers: {
-      'User-Agent': 'power-platform-resources-content-bot/1.0',
-      Accept: 'application/xml,text/xml,text/html,application/xhtml+xml,*/*'
-    }
-  });
+  let response;
+
+  try {
+    response = await fetch(url, {
+      headers: {
+        'User-Agent': 'power-platform-resources-content-bot/1.0',
+        Accept: 'application/xml,text/xml,text/html,application/xhtml+xml,*/*'
+      }
+    });
+  } catch (error) {
+    throw new Error(`Network request failed for ${url}: ${error.message}`);
+  }
 
   if (!response.ok) {
     throw new Error(`Request failed (${response.status}) for ${url}`);
@@ -75,7 +81,7 @@ function extractChannelIdFromText(rawText) {
     return rssMatch[1];
   }
 
-  const channelPathMatch = rawText.match(/youtube\.com\/channel\/(UC[0-9A-Za-z_-]{22})/);
+  const channelPathMatch = rawText.match(/\/channel\/(UC[0-9A-Za-z_-]{22})/);
   if (channelPathMatch) {
     return channelPathMatch[1];
   }
