@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jmanriquerios1.github.io/power-platform-resources/sitemap.xml
+Sitemap: https://resources.bizzappshub.com/sitemap.xml

@@ -5,12 +5,22 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(__dirname, "..");
-const resourcesRoot = path.join(repositoryRoot, "resources");
+const resourcesRoot = process.env.RESOURCES_ROOT
+  ? path.resolve(process.env.RESOURCES_ROOT)
+  : path.join(repositoryRoot, "resources");
 const outputPath = path.resolve(
   repositoryRoot,
   process.env.RESOURCES_OUTPUT_PATH || "assets/data/resources.json"
 );
-const repositoryName = process.env.GITHUB_REPOSITORY || "jmanriquerios1/power-platform-resources";
+const repositoryName = (
+  process.env.RESOURCES_REPOSITORY ||
+  process.env.GITHUB_REPOSITORY ||
+  "jmanriquerios1/power-platform-public-resources"
+);
+const sourceRepositoryName = (
+  process.env.SOURCE_REPOSITORY ||
+  "jmanriquerios1/power-platform-resources"
+).toLowerCase();
 const repositoryOwner = repositoryName.split("/")[0] || "jmanriquerios1";
 const defaultBranch = process.env.RESOURCES_REPOSITORY_BRANCH || "main";
 const githubRepositoryUrl = `https://github.com/${repositoryName}`;
@@ -57,6 +67,18 @@ function slugify(value) {
 
 function toPosixPath(value) {
   return value.split(path.sep).join("/");
+}
+
+function toRepositoryRelativePath(relativePath) {
+  const normalized = toPosixPath(relativePath);
+
+  if (repositoryName.toLowerCase() === sourceRepositoryName) {
+    return normalized;
+  }
+
+  return normalized.startsWith("resources/")
+    ? normalized.slice("resources/".length)
+    : normalized;
 }
 
 async function pathExists(targetPath) {
@@ -186,6 +208,7 @@ async function getReleaseFile(resourceDirectory) {
 async function normalizeResource(category, resourceEntry) {
   const resourceDirectory = path.join(resourcesRoot, category.directory, resourceEntry.name);
   const relativeResourcePath = toPosixPath(path.relative(repositoryRoot, resourceDirectory));
+  const repositoryRelativeResourcePath = toRepositoryRelativePath(relativeResourcePath);
   const readmePath = path.join(resourceDirectory, "README.md");
   const imagePath = path.join(resourceDirectory, "image.png");
 
@@ -211,7 +234,7 @@ async function normalizeResource(category, resourceEntry) {
     category: category.label,
     categoryKey: category.key,
     tags,
-    repositoryUrl: `${githubRepositoryUrl}/tree/${defaultBranch}/${relativeResourcePath}`,
+    repositoryUrl: `${githubRepositoryUrl}/tree/${defaultBranch}/${repositoryRelativeResourcePath}`,
     documentationUrl: readmeContent ? relativeReadmePath : "",
     imageUrl: hasImage ? toPosixPath(path.relative(repositoryRoot, imagePath)) : "",
     release: releaseFile
