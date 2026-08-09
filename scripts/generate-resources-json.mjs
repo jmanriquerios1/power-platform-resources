@@ -12,7 +12,11 @@ const outputPath = path.resolve(
   repositoryRoot,
   process.env.RESOURCES_OUTPUT_PATH || "assets/data/resources.json"
 );
-const repositoryName = process.env.GITHUB_REPOSITORY || "jmanriquerios1/power-platform-resources";
+const repositoryName = (
+  process.env.RESOURCES_REPOSITORY ||
+  process.env.GITHUB_REPOSITORY ||
+  "jmanriquerios1/power-platform-public-resources"
+);
 const repositoryOwner = repositoryName.split("/")[0] || "jmanriquerios1";
 const defaultBranch = process.env.RESOURCES_REPOSITORY_BRANCH || "main";
 const githubRepositoryUrl = `https://github.com/${repositoryName}`;

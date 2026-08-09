@@ -14,9 +14,11 @@
  * CATALOG_PATH           Path to resources.json (default: assets/data/resources.json)
  * PUBLIC_REPO_BASE_URL   Absolute base URL for raw resource files in the public repo.
  *                        Examples:
- *                          https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main
- *                          https://jmanriquerios1.github.io/power-platform-resources
- *                        Default: https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main
+ *                          https://raw.githubusercontent.com/jmanriquerios1/power-platform-public-resources/main
+ *                          https://jmanriquerios1.github.io/power-platform-public-resources
+ *                        Default: https://raw.githubusercontent.com/jmanriquerios1/power-platform-public-resources/main
+ * SOURCE_REPOSITORY       Full owner/repo name for the transitional monorepo layout.
+ *                        Default: jmanriquerios1/power-platform-resources
  *
  * The script reads CATALOG_PATH, updates matching fields in-place, and writes
  * the result back to the same file.  It is idempotent: absolute URLs are left
@@ -38,18 +40,27 @@ const catalogPath = path.resolve(
 
 const publicRepoBaseUrl = (
   process.env.PUBLIC_REPO_BASE_URL ||
-  "https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main"
+  "https://raw.githubusercontent.com/jmanriquerios1/power-platform-public-resources/main"
 ).replace(/\/+$/, "");
+const sourceRepository = (
+  process.env.SOURCE_REPOSITORY ||
+  "jmanriquerios1/power-platform-resources"
+).toLowerCase();
 
 /**
- * Returns true when the base URL host is exactly raw.githubusercontent.com.
- * Uses URL parsing to avoid substring-based host matching.
+ * Returns the owner/repo pair when the base URL points to raw.githubusercontent.com.
  */
-function isRawGithubUrl(baseUrl) {
+function getRawGithubRepository(baseUrl) {
   try {
-    return new URL(baseUrl).hostname === "raw.githubusercontent.com";
+    const parsed = new URL(baseUrl);
+    if (parsed.hostname !== "raw.githubusercontent.com") {
+      return "";
+    }
+
+    const [owner = "", repo = ""] = parsed.pathname.split("/").filter(Boolean);
+    return owner && repo ? `${owner}/${repo}`.toLowerCase() : "";
   } catch {
-    return false;
+    return "";
   }
 }
 
@@ -70,12 +81,11 @@ function isAbsolute(value) {
  *   → "https://raw.githubusercontent.com/…/main/resources/pcf/pcf-choice-color-tiles/README.md"
  *
  * In the public repo the /resources/ prefix is removed (files live at the
- * root), so the mapping strips that leading segment automatically when the
- * PUBLIC_REPO_BASE_URL does not contain "raw.githubusercontent.com" (i.e. when
- * pointing to a Pages URL where the directory layout differs).
+ * root), so the mapping strips that leading segment automatically.
  *
- * When pointing to raw.githubusercontent.com the full path is preserved so the
- * link resolves correctly in the monorepo during the transition period.
+ * During the transition period the original monorepo may still be used as the
+ * base URL. In that case the full path is preserved so the link resolves
+ * correctly before the physical separation happens.
  */
 function toAbsoluteUrl(relativePath) {
   if (!relativePath || isAbsolute(relativePath)) return relativePath;
@@ -90,9 +100,9 @@ function toAbsoluteUrl(relativePath) {
     ? normalized.slice("resources/".length)
     : normalized;
 
-  // When the base is a raw GitHub URL keep the full monorepo path so files
-  // still resolve correctly before the physical separation happens.
-  const effectivePath = isRawGithubUrl(publicRepoBaseUrl)
+  // When the base still points at the transitional monorepo, keep the full
+  // path so files continue to resolve correctly until the split is complete.
+  const effectivePath = getRawGithubRepository(publicRepoBaseUrl) === sourceRepository
     ? normalized
     : strippedPath;
 

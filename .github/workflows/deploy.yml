@@ -1,13 +1,5 @@
 name: Deploy web site
 
-# This workflow is the entry point for building and deploying the web portal
-# once the repository has been separated (FASE 3).
-#
-# Before FASE 3 completes, GitHub Pages is still configured to deploy directly
-# from the main branch (classic mode).  Enable this workflow by adding the
-# 'pages' event trigger or switching Pages to "GitHub Actions" in Settings once
-# the public resources repo is ready.
-#
 # Required repository secrets (set in Settings → Secrets → Actions):
 #   RESOURCES_REPO_TOKEN  — fine-grained PAT or classic token with `repo:read`
 #                           scope for the public resources repository.
@@ -17,10 +9,9 @@ name: Deploy web site
 
 on:
   workflow_dispatch:
-  # Uncomment after FASE 3 to trigger on push to main:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -32,7 +23,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  PUBLIC_RESOURCES_REPO: jmanriquerios1/power-platform-resources
+  PUBLIC_RESOURCES_REPO: jmanriquerios1/power-platform-public-resources
   PUBLIC_RESOURCES_BRANCH: main
 
 jobs:
