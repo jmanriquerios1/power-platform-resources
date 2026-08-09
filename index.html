@@ -1,240 +1,528 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jonathan Manrique Ríos | Connector de ideas</title>
-    <meta name="description" content="Open-source resources, architecture patterns, components and practical examples for Microsoft Power Platform.">
-    <link rel="canonical" href="https://jmanriquerios1.github.io/power-platform-resources/">
-    <meta property="og:title" content="Jonathan Manrique Ríos | Connector de ideas">
-    <meta property="og:description" content="Power Platform resources built for the real world.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://jmanriquerios1.github.io/power-platform-resources/">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Jonathan Manrique Ríos | Connector de ideas">
-    <meta name="twitter:description" content="Open-source Power Platform portal for developers, consultants and architects.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Space+Grotesk:wght@500;700&family=Space+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/tokens.css">
-    <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/layout.css">
-    <link rel="stylesheet" href="assets/css/components.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="assets/css/interactive.css">
-    <link rel="stylesheet" href="assets/css/redesign.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jonathan Manrique Ríos | Recursos Power Platform</title>
+    <meta
+      name="description"
+      content="Recursos open-source, patrones de arquitectura, blog y videos sobre Microsoft Power Platform para equipos que construyen en producción."
+    />
+    <link rel="canonical" href="https://resources.bizzappshub.com/index.html" />
+
+    <meta property="og:title" content="Jonathan Manrique Ríos | Recursos Power Platform" />
+    <meta
+      property="og:description"
+      content="Recursos reales de Power Platform: arquitectura, componentes, tutoriales, blog y videos."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://resources.bizzappshub.com/index.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f9fc;
+        --surface: #ffffff;
+        --surface-soft: #f1f5f9;
+        --text: #0f172a;
+        --muted: #475569;
+        --primary: #2563eb;
+        --primary-strong: #1d4ed8;
+        --ring: #93c5fd;
+        --border: #dbe3ef;
+        --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        --radius: 16px;
+        --radius-sm: 12px;
+        --max: 1160px;
+      }
+
+      * { box-sizing: border-box; }
+      html:focus-within { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        color: var(--text);
+        background: radial-gradient(circle at 85% -10%, #dbeafe 0, transparent 35%), var(--bg);
+        line-height: 1.6;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        z-index: 1000;
+        background: #111827;
+        color: #fff;
+        padding: .75rem 1rem;
+        border-radius: .5rem;
+      }
+      .skip-link:focus { left: 1rem; top: 1rem; }
+
+      .container { width: min(100% - 2rem, var(--max)); margin: 0 auto; }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(8px);
+        background: rgba(247, 249, 252, 0.86);
+        border-bottom: 1px solid rgba(219, 227, 239, 0.9);
+      }
+      .nav {
+        min-height: 72px;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 1rem;
+      }
+      .brand {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .brand small {
+        display: block;
+        color: var(--muted);
+        font-size: .78rem;
+        font-weight: 600;
+      }
+
+      .menu-btn {
+        display: none;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        border-radius: 10px;
+        padding: .55rem .75rem;
+        font-weight: 600;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: #1e293b;
+        font-weight: 600;
+        font-size: .95rem;
+        border-radius: 999px;
+        padding: .5rem .85rem;
+      }
+      .nav-links a[aria-current="page"],
+      .nav-links a:hover { background: #eaf1ff; color: #0b3ca1; }
+
+      .nav-actions { display: flex; align-items: center; gap: .6rem; }
+      .btn {
+        border: 0;
+        border-radius: 12px;
+        padding: .72rem 1rem;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .btn-primary { background: var(--primary); color: #fff; }
+      .btn-primary:hover { background: var(--primary-strong); }
+      .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+
+      .hero {
+        padding: 4rem 0 2rem;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr .8fr;
+        gap: 1.25rem;
+      }
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .hero-copy { padding: clamp(1.3rem, 4vw, 2.4rem); }
+      .eyebrow { color: #1d4ed8; font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; }
+      h1 { line-height: 1.15; letter-spacing: -0.03em; font-size: clamp(1.9rem, 4.6vw, 3rem); margin: .5rem 0 .85rem; }
+      .lead { color: var(--muted); font-size: 1.06rem; }
+
+      .quick-search { padding: 1.2rem; }
+      .field {
+        display: grid;
+        gap: .45rem;
+        margin-bottom: .85rem;
+      }
+      .field label { font-weight: 650; font-size: .92rem; }
+      .field input,
+      .field select {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: .7rem .8rem;
+        font: inherit;
+        background: #fff;
+      }
+
+      .stats {
+        margin-top: 1rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: .8rem;
+      }
+      .stat { padding: 1rem; text-align: center; }
+      .stat b { display: block; font-size: 1.35rem; }
+      .stat span { color: var(--muted); font-size: .88rem; }
+
+      .section { padding: 1rem 0 2.4rem; }
+      .section-head { margin-bottom: 1rem; }
+      .section-head h2 { margin: .2rem 0; font-size: clamp(1.35rem, 2.5vw, 1.95rem); }
+      .section-head p { margin: 0; color: var(--muted); }
+
+      .grid { display: grid; gap: .95rem; }
+      .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: .55rem;
+      }
+      .card h3 { margin: 0; font-size: 1.02rem; }
+      .card p { margin: 0; color: var(--muted); font-size: .95rem; }
+      .meta { font-size: .82rem; color: #1e40af; font-weight: 600; }
+      .card a { margin-top: auto; }
+
+      .resource-toolbar {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: .7rem;
+        margin-bottom: .9rem;
+      }
+
+      .footer {
+        border-top: 1px solid var(--border);
+        margin-top: 1rem;
+        background: #fff;
+      }
+      .footer-wrap {
+        padding: 1.4rem 0 2rem;
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr;
+        gap: 1rem;
+      }
+      .footer h3, .footer h4 { margin: 0 0 .4rem; }
+      .footer p, .footer a { margin: .18rem 0; color: var(--muted); text-decoration: none; }
+
+      :focus-visible {
+        outline: 3px solid var(--ring);
+        outline-offset: 2px;
+        border-radius: 10px;
+      }
+
+      @media (max-width: 980px) {
+        .hero-grid { grid-template-columns: 1fr; }
+        .grid-3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+        .footer-wrap { grid-template-columns: 1fr 1fr; }
+      }
+
+      @media (max-width: 760px) {
+        .nav { grid-template-columns: 1fr auto auto; }
+        .menu-btn { display: inline-flex; }
+        .nav-links {
+          position: absolute;
+          left: 1rem;
+          right: 1rem;
+          top: 72px;
+          display: none;
+          flex-direction: column;
+          align-items: stretch;
+          padding: .65rem;
+          background: #fff;
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          box-shadow: var(--shadow);
+        }
+        .nav-links[data-open="true"] { display: flex; }
+        .stats { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: 1fr; }
+        .resource-toolbar { grid-template-columns: 1fr; }
+        .footer-wrap { grid-template-columns: 1fr; }
+      }
+    </style>
   </head>
-  <body data-page="home" data-site-root="" data-catalog-path="assets/data/resources.json">
+
+  <body>
+    <a href="#contenido" class="skip-link">Saltar al contenido principal</a>
+
     <header class="site-header">
-      <nav class="nav-wrap" aria-label="Primary">
-        <a class="brand" href="index.html">
-          <strong>Jonathan Manrique Ríos</strong>
-          <span>Connector de ideas</span>
+      <div class="container nav" role="navigation" aria-label="Navegación principal">
+        <a class="brand" href="index.html" aria-current="page">
+          Jonathan Manrique Ríos
+          <small>Connector de ideas · Power Platform</small>
         </a>
 
-        <button id="menuToggle" class="menu-toggle" aria-expanded="false" aria-controls="navLinks">
-          Menu
+        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mainNav" type="button">
+          Menú
         </button>
 
-        <div id="navLinks" class="nav-links" data-open="false">
-          <a href="index.html" aria-current="page">Home</a>
+        <nav id="mainNav" class="nav-links" data-open="false">
+          <a href="#recursos" aria-current="page">Recursos</a>
+          <a href="#categorias">Categorías</a>
+          <a href="#blog">Blog</a>
+          <a href="#videos">Videos</a>
+          <a href="#about">Sobre mí</a>
+        </nav>
 
-          <div class="nav-item nav-item--dropdown">
-            <button class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="resourcesMenu">
-              Resources
-            </button>
-            <div id="resourcesMenu" class="nav-dropdown-panel" data-open="false">
-            <a href="resources/pcf/index.html">PCF Controls</a>
-            <a href="resources/code-apps/index.html">Code Apps</a>
-            <a href="resources/power-pages/index.html">Power Pages SPA</a>
-            <a href="resources/plugins/index.html">Dataverse Plugins</a>
-            <a href="resources/components/index.html">Power Platform Components</a>
-            </div>
-          </div>
-
-          <a href="tutorials/index.html">Tutorials</a>
-          <a href="architecture/index.html">Architecture</a>
-          <a href="speaking/index.html">Speaking</a>
-          <a href="about/index.html">About</a>
+        <div class="nav-actions">
+          <a class="btn btn-primary" href="https://github.com/jmanriquerios1" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
-
-        <div class="nav-search">
-          <input type="search" placeholder="Search resources..." aria-label="Search resources">
-        </div>
-
-        <a class="btn btn-primary" href="speaking/index.html">Speaking</a>
-        <button id="themeToggle" class="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" type="button">🌙</button>
-      </nav>
+      </div>
     </header>
 
-    <main>
-      <section class="hero" id="home">
-        <div class="hero-accent-blue" aria-hidden="true"></div>
-        <div class="hero-accent-amber" aria-hidden="true"></div>
-        <div class="section-wrap">
-          <p class="eyebrow eyebrow-light">// connector · power-platform · community</p>
-          <h1>Connector de ideas</h1>
-          <p class="hero-subtitle">Power Platform resources built for the real world.</p>
-          <p>Open-source resources, architecture patterns, components and practical examples for Microsoft Power Platform.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="resources/index.html">Explore resources</a>
-            <a class="btn btn-secondary" href="https://github.com/jmanriquerios1" target="_blank" rel="noopener noreferrer">View GitHub</a>
+    <main id="contenido">
+      <section class="hero" id="top">
+        <div class="container hero-grid">
+          <article class="panel hero-copy">
+            <p class="eyebrow">open-source · arquitectura · comunidad</p>
+            <h1>Recursos Power Platform para construir <em>en producción</em></h1>
+            <p class="lead">
+              Una página totalmente renovada: navegación clara, diseño profesional, mejor accesibilidad
+              y una experiencia más interactiva.
+            </p>
+            <div style="display:flex; gap:.65rem; flex-wrap:wrap; margin-top:1rem;">
+              <a class="btn btn-primary" href="#recursos">Explorar recursos</a>
+              <a class="btn btn-secondary" href="#blog">Ver blog</a>
+            </div>
+          </article>
+
+          <aside class="panel quick-search" aria-labelledby="search-title">
+            <h2 id="search-title" style="margin:.2rem 0 1rem; font-size:1.1rem;">Búsqueda rápida</h2>
+            <div class="field">
+              <label for="searchInput">Buscar por nombre o tecnología</label>
+              <input id="searchInput" type="search" placeholder="Ej: PCF, Dataverse, React..." />
+            </div>
+            <div class="field">
+              <label for="filterCategory">Filtrar por categoría</label>
+              <select id="filterCategory">
+                <option value="all">Todas</option>
+                <option value="pcf">PCF</option>
+                <option value="code-apps">Code Apps</option>
+                <option value="power-pages">Power Pages</option>
+                <option value="plugins">Plugins</option>
+                <option value="components">Components</option>
+              </select>
+            </div>
+            <p style="margin:.2rem 0 0; color:var(--muted); font-size:.88rem;">Tip: también puedes navegar por Blog y Videos más abajo.</p>
+          </aside>
+        </div>
+
+        <div class="container stats" aria-label="Indicadores de contenido">
+          <div class="panel stat"><b>5+</b><span>Categorías técnicas</span></div>
+          <div class="panel stat"><b>12+</b><span>Patrones de arquitectura</span></div>
+          <div class="panel stat"><b>20+</b><span>Recursos prácticos</span></div>
+          <div class="panel stat"><b>100%</b><span>Open source</span></div>
+        </div>
+      </section>
+
+      <section class="section" id="recursos">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">featured resources</p>
+            <h2>Recursos destacados</h2>
+            <p>Selecciona y reutiliza componentes, ejemplos y patrones listos para tus proyectos.</p>
+          </header>
+
+          <div class="resource-toolbar">
+            <p id="resultCount" style="margin:0; color:var(--muted);">Mostrando todos los recursos.</p>
+          </div>
+
+          <div class="grid grid-3" id="resourcesGrid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section" id="categorias">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">resource map</p>
+            <h2>Categorías</h2>
+            <p>Arquitectura clara por áreas para encontrar más rápido lo que necesitas.</p>
+          </header>
+          <div class="grid grid-3">
+            <article class="card"><h3>PCF Controls</h3><p>Controles reutilizables para experiencias ricas en Model-driven y Canvas apps.</p></article>
+            <article class="card"><h3>Code Apps</h3><p>Aplicaciones y aceleradores con enfoque práctico y escalable.</p></article>
+            <article class="card"><h3>Power Pages SPA</h3><p>Patrones frontend para portales modernos integrados con Dataverse.</p></article>
+            <article class="card"><h3>Dataverse Plugins</h3><p>Automatización de reglas de negocio con C# y buenas prácticas ALM.</p></article>
+            <article class="card"><h3>Components</h3><p>Bloques listos para mejorar UX, productividad y estandarización.</p></article>
+            <article class="card"><h3>Architecture</h3><p>Decisiones de diseño para soluciones sostenibles en producción.</p></article>
           </div>
         </div>
       </section>
 
-      <div class="stats-bar" aria-label="Site statistics">
-        <div class="stat"><b data-target="5">0</b><span>Categorías</span></div>
-        <div class="stat"><b data-target="12">0</b><span>Patrones de arquitectura</span></div>
-        <div class="stat"><b data-target="8">0</b><span>Tecnologías cubiertas</span></div>
-        <div class="stat"><b data-target="100">0</b><span>% Open Source</span></div>
-      </div>
-
-      <section class="section">
-        <div class="section-wrap">
-          <div class="section-head">
-            <p class="eyebrow">// open-source · featured</p>
-            <h2>Featured Resources</h2>
-            <p>Build once. Reuse everywhere.</p>
-          </div>
-          <div id="featuredResources" class="grid grid-3" aria-live="polite"></div>
-        </div>
-      </section>
-
-      <section class="section section-light">
-        <div class="section-wrap">
-          <div class="section-head">
-            <p class="eyebrow">// technologies · index</p>
-            <h2>Resource Categories</h2>
-            <p>From architecture to implementation.</p>
-          </div>
-          <ul id="categoryCards" class="grid grid-3"></ul>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-wrap">
-          <div class="section-head">
-            <p class="eyebrow">// latest · repositories</p>
-            <h2>Latest Resources</h2>
-            <p>Code you can actually use.</p>
-          </div>
-          <div id="latestResources" class="grid grid-3" aria-live="polite"></div>
-        </div>
-      </section>
-
-      <section class="section section-light" id="architecture">
-        <div class="section-wrap">
-          <div class="section-head">
-            <p class="eyebrow">// architecture · production</p>
-            <h2>Built beyond the demo</h2>
-            <p>Patterns I use in real projects.</p>
-          </div>
-          <div class="tag-row">
-            <span class="tag">Dataverse</span>
-            <span class="tag">C#</span>
-            <span class="tag">PCF</span>
-            <span class="tag">React</span>
-            <span class="tag">TypeScript</span>
-            <span class="tag">Copilot Studio</span>
-            <span class="tag">Power Automate</span>
-            <span class="tag">Azure</span>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="tutorials">
-        <div class="section-wrap">
-          <div class="section-head">
-            <p class="eyebrow">// tutorials · practical</p>
-            <h2>Tutorials</h2>
-            <p>Short guides focused on implementation, not demos.</p>
-          </div>
-          <div class="grid grid-2">
+      <section class="section" id="blog">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">nuevo bloque</p>
+            <h2>Entradas de Blog</h2>
+            <p>Insights, aprendizajes y guías accionables para makers, devs y arquitectos.</p>
+          </header>
+          <div class="grid grid-3">
             <article class="card">
-              <h3>Power Platform ALM workflows</h3>
-              <p>From solution layering to deployment automation.</p>
+              <p class="meta">ALM · Governance</p>
+              <h3>Cómo estructurar un ALM robusto en Power Platform</h3>
+              <p>Buenas prácticas para versionado, entornos y despliegues confiables.</p>
+              <a class="btn btn-secondary" href="#" aria-label="Leer entrada ALM robusto">Leer entrada</a>
             </article>
             <article class="card">
-              <h3>PCF implementation patterns</h3>
-              <p>Component architecture with reusable TypeScript structure.</p>
+              <p class="meta">Power Pages · Frontend</p>
+              <h3>Arquitectura SPA en Power Pages sin perder mantenibilidad</h3>
+              <p>Estrategias para escalar componentes y performance en experiencias complejas.</p>
+              <a class="btn btn-secondary" href="#" aria-label="Leer entrada sobre SPA en Power Pages">Leer entrada</a>
+            </article>
+            <article class="card">
+              <p class="meta">Dataverse · Plugins</p>
+              <h3>Patrones de plugins para lógica de negocio desacoplada</h3>
+              <p>Cuándo usar pre/post operation, validaciones y manejo de errores eficiente.</p>
+              <a class="btn btn-secondary" href="#" aria-label="Leer entrada de patrones de plugins">Leer entrada</a>
             </article>
           </div>
         </div>
       </section>
 
-      <section class="section section-dark" id="speaking">
-        <div class="section-wrap">
-          <div class="section-head">
-            <p class="eyebrow eyebrow-light">// community · open-source</p>
-            <h2>Community &amp; Speaking</h2>
-            <p>Sessions, talks and community resources for teams building real solutions.</p>
-          </div>
-          <div class="actions">
-            <a class="btn btn-primary" href="speaking/index.html">Speaking resources</a>
-            <a class="btn btn-secondary" href="tutorials/index.html">Read tutorials</a>
+      <section class="section" id="videos">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">nuevo bloque</p>
+            <h2>Videos (YouTube)</h2>
+            <p>Contenido audiovisual para aprender más rápido con demos y explicaciones prácticas.</p>
+          </header>
+          <div class="grid grid-3">
+            <article class="card">
+              <p class="meta">YouTube</p>
+              <h3>Introducción a arquitectura Power Platform en producción</h3>
+              <p>Visión general para definir una base técnica sólida.</p>
+              <a class="btn btn-secondary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Ver en YouTube</a>
+            </article>
+            <article class="card">
+              <p class="meta">YouTube</p>
+              <h3>PCF desde cero: estructura, build y despliegue</h3>
+              <p>Paso a paso para crear controles reutilizables con enfoque real.</p>
+              <a class="btn btn-secondary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Ver en YouTube</a>
+            </article>
+            <article class="card">
+              <p class="meta">YouTube</p>
+              <h3>Power Pages + Dataverse: patrón escalable</h3>
+              <p>Cómo integrar frontend moderno con seguridad y performance.</p>
+              <a class="btn btn-secondary" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Ver en YouTube</a>
+            </article>
           </div>
         </div>
       </section>
 
       <section class="section" id="about">
-        <div class="section-wrap">
-          <div class="section-head">
-            <p class="eyebrow">// architect · practitioner</p>
-            <h2>About</h2>
-            <p>Power Platform Architect. Community Speaker. Practical innovator.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-light">
-        <div class="section-wrap">
-          <div class="section-head">
-            <p class="eyebrow">// tu turno</p>
-            <h2>Tu turno</h2>
-            <p>Take the idea. Improve it. Share it.</p>
-          </div>
-          <div class="actions">
-            <a class="btn btn-primary" href="https://github.com/jmanriquerios1" target="_blank" rel="noopener noreferrer">Explore GitHub</a>
-            <a class="btn" href="resources/index.html">Contribute</a>
-          </div>
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow">about</p>
+            <h2>Sobre este portal</h2>
+            <p>
+              Rediseñado para ser más limpio, navegable, accesible y profesional. Este espacio prioriza recursos
+              que realmente funcionan fuera del demo.
+            </p>
+          </header>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <div class="footer-wrap footer-grid">
-        <div class="footer-col footer-col--brand">
-          <h2>Jonathan Manrique Ríos</h2>
-          <p>Connector de ideas</p>
+      <div class="container footer-wrap">
+        <section>
+          <h3>Jonathan Manrique Ríos</h3>
           <p>Power Platform Architect · Community Speaker</p>
-          <p class="signature">// ideas que funcionan en producción, no en demos</p>
-        </div>
-
-        <div class="footer-col">
-          <h3>Resources</h3>
-          <a class="list-link" href="resources/index.html">All resources</a>
-          <a class="list-link" href="tutorials/index.html">Tutorials</a>
-          <a class="list-link" href="architecture/index.html">Architecture</a>
-        </div>
-
-        <div class="footer-col">
-          <h3>Community</h3>
-          <a class="list-link" href="speaking/index.html">Speaking</a>
-          <a class="list-link" href="about/index.html">About</a>
-        </div>
-
-        <div class="footer-col">
-          <h3>Social</h3>
-          <a class="list-link" href="https://github.com/jmanriquerios1" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a class="list-link" href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </div>
+          <p>"Ideas que funcionan en producción, no en demos"</p>
+        </section>
+        <section>
+          <h4>Navegación</h4>
+          <p><a href="#recursos">Recursos</a></p>
+          <p><a href="#blog">Blog</a></p>
+          <p><a href="#videos">Videos</a></p>
+        </section>
+        <section>
+          <h4>Social</h4>
+          <p><a href="https://github.com/jmanriquerios1" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+          <p><a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
+        </section>
       </div>
     </footer>
 
-    <script src="assets/js/catalog.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/navigation.js"></script>
-    <script src="assets/js/i18n.js"></script>
+    <script>
+      const resources = [
+        { name: 'PCF Controls', category: 'pcf', desc: 'Controles listos para reusar en escenarios enterprise.', url: 'resources/pcf/index.html' },
+        { name: 'Code Apps', category: 'code-apps', desc: 'Aplicaciones de referencia con buenas prácticas.', url: 'resources/code-apps/index.html' },
+        { name: 'Power Pages SPA', category: 'power-pages', desc: 'Frontend modular para portales sobre Dataverse.', url: 'resources/power-pages/index.html' },
+        { name: 'Dataverse Plugins', category: 'plugins', desc: 'Automatización backend con C# y arquitectura robusta.', url: 'resources/plugins/index.html' },
+        { name: 'Platform Components', category: 'components', desc: 'Componentes reutilizables para acelerar entregables.', url: 'resources/components/index.html' },
+        { name: 'Architecture Hub', category: 'components', desc: 'Patrones técnicos para soluciones de larga vida.', url: 'architecture/index.html' }
+      ];
+
+      const grid = document.getElementById('resourcesGrid');
+      const searchInput = document.getElementById('searchInput');
+      const filterCategory = document.getElementById('filterCategory');
+      const resultCount = document.getElementById('resultCount');
+      const menuBtn = document.getElementById('menuBtn');
+      const mainNav = document.getElementById('mainNav');
+
+      function renderResources(items) {
+        grid.innerHTML = '';
+        for (const item of items) {
+          const el = document.createElement('article');
+          el.className = 'card';
+          el.innerHTML = `
+            <p class="meta">${item.category}</p>
+            <h3>${item.name}</h3>
+            <p>${item.desc}</p>
+            <a class="btn btn-secondary" href="${item.url}">Ver recurso</a>
+          `;
+          grid.appendChild(el);
+        }
+        resultCount.textContent = `Mostrando ${items.length} recurso(s).`;
+      }
+
+      function applyFilter() {
+        const term = searchInput.value.trim().toLowerCase();
+        const cat = filterCategory.value;
+        const filtered = resources.filter(r => {
+          const textMatch = r.name.toLowerCase().includes(term) || r.desc.toLowerCase().includes(term) || r.category.toLowerCase().includes(term);
+          const catMatch = cat === 'all' ? true : r.category === cat;
+          return textMatch && catMatch;
+        });
+        renderResources(filtered);
+      }
+
+      searchInput.addEventListener('input', applyFilter);
+      filterCategory.addEventListener('change', applyFilter);
+
+      menuBtn.addEventListener('click', () => {
+        const open = mainNav.getAttribute('data-open') === 'true';
+        mainNav.setAttribute('data-open', String(!open));
+        menuBtn.setAttribute('aria-expanded', String(!open));
+      });
+
+      renderResources(resources);
+    </script>
   </body>
 </html>
