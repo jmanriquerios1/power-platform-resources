@@ -5,7 +5,9 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(__dirname, "..");
-const resourcesRoot = path.join(repositoryRoot, "resources");
+const resourcesRoot = process.env.RESOURCES_ROOT
+  ? path.resolve(process.env.RESOURCES_ROOT)
+  : path.join(repositoryRoot, "resources");
 const outputPath = path.resolve(
   repositoryRoot,
   process.env.RESOURCES_OUTPUT_PATH || "assets/data/resources.json"

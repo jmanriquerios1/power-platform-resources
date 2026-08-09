@@ -4,7 +4,9 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 
 const ROOT_DIR = process.cwd();
-const CONTENT_DIR = path.join(ROOT_DIR, 'resources', 'content');
+const CONTENT_DIR = process.env.CONTENT_DIR
+  ? path.resolve(process.env.CONTENT_DIR)
+  : path.join(ROOT_DIR, 'resources', 'content');
 const BLOG_DIR = path.join(CONTENT_DIR, 'blog');
 const VIDEOS_DIR = path.join(CONTENT_DIR, 'videos');
 const OUTPUT_FILE = path.join(CONTENT_DIR, 'index.json');

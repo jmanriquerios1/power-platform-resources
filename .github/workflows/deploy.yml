@@ -1,0 +1,112 @@
+name: Deploy web site
+
+# This workflow is the entry point for building and deploying the web portal
+# once the repository has been separated (FASE 3).
+#
+# Before FASE 3 completes, GitHub Pages is still configured to deploy directly
+# from the main branch (classic mode).  Enable this workflow by adding the
+# 'pages' event trigger or switching Pages to "GitHub Actions" in Settings once
+# the public resources repo is ready.
+#
+# Required repository secrets (set in Settings → Secrets → Actions):
+#   RESOURCES_REPO_TOKEN  — fine-grained PAT or classic token with `repo:read`
+#                           scope for the public resources repository.
+#                           Only required if the public repo is private.
+#                           If the public repo is public, the step will work
+#                           without a token (unauthenticated raw download).
+
+on:
+  workflow_dispatch:
+  # Uncomment after FASE 3 to trigger on push to main:
+  # push:
+  #   branches:
+  #     - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  PUBLIC_RESOURCES_REPO: jmanriquerios1/power-platform-resources
+  PUBLIC_RESOURCES_BRANCH: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout web repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # ── Fetch resources catalog from the public repo ──────────────────────
+      #
+      # This step downloads the pre-generated resources.json from the public
+      # resources repository so the web site can display resource cards without
+      # needing the source files locally.
+      #
+      # Two strategies are supported:
+      #   1. Raw GitHub URL (default, works for public repos, no token needed).
+      #   2. Authenticated API call (set RESOURCES_REPO_TOKEN for private repos).
+      #
+      - name: Fetch resources catalog from public repo
+        env:
+          RESOURCES_REPO_TOKEN: ${{ secrets.RESOURCES_REPO_TOKEN }}
+        run: |
+          CATALOG_URL="https://raw.githubusercontent.com/${PUBLIC_RESOURCES_REPO}/${PUBLIC_RESOURCES_BRANCH}/assets/data/resources.json"
+
+          if [ -n "${RESOURCES_REPO_TOKEN}" ]; then
+            echo "Downloading catalog with authentication..."
+            curl -fsSL \
+              -H "Authorization: ******" \
+              -H "Accept: application/vnd.github.raw" \
+              -o assets/data/resources.json \
+              "${CATALOG_URL}"
+          else
+            echo "Downloading catalog without authentication (public repo)..."
+            curl -fsSL -o assets/data/resources.json "${CATALOG_URL}"
+          fi
+
+          echo "Catalog downloaded:"
+          node -e "
+            const d = require('./assets/data/resources.json');
+            console.log('  resources:', d.resources?.length ?? 0);
+            console.log('  generatedAt:', d.generatedAt ?? 'unknown');
+          "
+
+      # ── Build content index (blog + videos) ───────────────────────────────
+      - name: Sync YouTube videos
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          YT_CHANNEL_HANDLE: "@JonathanManriqueRios"
+        run: node scripts/import-youtube-rss.js
+
+      - name: Build content index
+        run: node scripts/build-content-index.js
+
+      # ── Upload Pages artifact ─────────────────────────────────────────────
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
