@@ -2,7 +2,7 @@
 /**
  * rewrite-catalog-urls.mjs
  *
- * Rewrites relative `documentationUrl` and `imageUrl` fields in the generated
+ * Rewrites relative `documentationUrl`, `imageUrl` and release asset URLs in the generated
  * resources catalog (assets/data/resources.json) so they point to absolute URLs
  * on the public resources repository, rather than to local relative paths that
  * only work when both the web site and the resource source live in the same repo.
@@ -146,6 +146,14 @@ async function main() {
 
     if (resource.imageUrl && !isAbsolute(resource.imageUrl)) {
       updated.imageUrl = toAbsoluteUrl(resource.imageUrl);
+      rewrittenCount++;
+    }
+
+    if (resource.release?.url && !isAbsolute(resource.release.url)) {
+      updated.release = {
+        ...resource.release,
+        url: toAbsoluteUrl(resource.release.url)
+      };
       rewrittenCount++;
     }
 
