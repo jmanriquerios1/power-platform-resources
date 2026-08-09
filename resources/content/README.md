@@ -38,14 +38,45 @@ Reglas:
 3. **Índice:** ejecutar `node scripts/build-content-index.js` para regenerar `resources/content/index.json`.
 4. **Home:** `index.html` consume `resources/content/index.json` y muestra resultados ordenados por fecha.
 
-## Automatización CI
+## Backfill completo y actualización incremental de YouTube
+
+El importador de YouTube ahora usa una estrategia por niveles para cubrir el histórico completo y seguir actualizando automáticamente:
+
+1. **YouTube Data API v3 (preferido):** si existe el secret `YOUTUBE_API_KEY`, consulta el canal y pagina toda la playlist de uploads (`channels.list` + `playlistItems.list`) para backfill completo.
+2. **`yt-dlp` (fallback principal):** si no hay API key o la API falla, usa `yt-dlp` para enumerar videos públicos del canal en formato JSON automatizable.
+3. **RSS de YouTube (fallback final):** si lo anterior falla, usa RSS para rescatar publicaciones recientes.
+
+Reglas de persistencia:
+- deduplicación por `videoId`;
+- no se eliminan videos históricos por salir del RSS reciente;
+- se actualizan metadatos (título, URL canónica, fecha, resumen) cuando aparece mejor información;
+- un archivo Markdown por video en `resources/content/videos/`.
+
+## Automatización CI (cada 12 horas)
 
 El workflow `.github/workflows/build-content-index.yml`:
-- importa videos desde RSS,
+- sincroniza videos con la estrategia completa (API key opcional + fallbacks),
 - reconstruye `index.json`,
 - hace commit solo si hay cambios.
+
+Frecuencia:
+- ejecución programada cada 12 horas (`cron: 0 */12 * * *`);
+- también puede ejecutarse manualmente (`workflow_dispatch`).
+
+## Secret opcional `YOUTUBE_API_KEY`
+
+- Si se configura el secret `YOUTUBE_API_KEY`, el workflow intenta primero el backfill completo por API.
+- Si no está definido, el workflow sigue funcionando con `yt-dlp` y RSS.
+- El secret se inyecta por `env` en GitHub Actions y no se escribe en archivos del repositorio.
+
+## Ejecución manual local
+
+```bash
+node scripts/import-youtube-rss.js
+node scripts/build-content-index.js
+```
 
 ## Limitaciones conocidas
 
 - LinkedIn no ofrece un feed público estable equivalente al RSS de YouTube para ingesta automática sin autenticación.
-- En entornos sin conectividad externa, la verificación automática de metadatos públicos puede no estar disponible; en ese caso se conservan metadatos neutrales y se recomienda validación manual posterior.
+- En entornos sin conectividad externa, la sincronización puede no completar el backfill; en ese caso el workflow programado seguirá intentando y completará la carga cuando la conectividad esté disponible.
