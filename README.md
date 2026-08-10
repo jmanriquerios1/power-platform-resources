@@ -96,12 +96,13 @@ The portal will automatically discover and publish the new resource.
 
 ## Workflow Configuration
 
-The `generate-resources-catalog` workflow now mirrors `assets/data/resources.json`
-to `jmanriquerios1/power-platform-public-resources` so the public repo keeps the
-catalog consumed during deployment.
+The `generate-resources-catalog` workflow scans `resources/` inside this
+repository, generates `assets/data/resources.json`, and commits it back to
+`main`. All resource URLs point to `jmanriquerios1/power-platform-resources`
+with the `resources/` prefix preserved.
 
-To enable that sync, configure the `PUBLIC_RESOURCES_REPO_SYNC_TOKEN` repository
-secret with write access to `jmanriquerios1/power-platform-public-resources`.
+The `deploy` workflow generates the catalog locally and deploys the site to
+GitHub Pages without downloading files from any external repository.
 
 ## Local Development
 

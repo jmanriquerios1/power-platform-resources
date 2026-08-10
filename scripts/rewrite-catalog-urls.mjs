@@ -40,7 +40,7 @@ const catalogPath = path.resolve(
 
 const publicRepoBaseUrl = (
   process.env.PUBLIC_REPO_BASE_URL ||
-  "https://raw.githubusercontent.com/jmanriquerios1/power-platform-public-resources/main"
+  "https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main"
 ).replace(/\/+$/, "");
 const sourceRepository = (
   process.env.SOURCE_REPOSITORY ||
@@ -91,22 +91,7 @@ function toAbsoluteUrl(relativePath) {
   if (!relativePath || isAbsolute(relativePath)) return relativePath;
 
   const normalized = relativePath.replace(/^\.\//, "");
-
-  // In the public repo layout (post-separation) the "resources/" prefix is
-  // gone: pcf/… lives at the repo root.  Only strip the prefix when the base
-  // URL points to the separated public repo (detected by absence of the
-  // monorepo repository name in the base URL).
-  const strippedPath = normalized.startsWith("resources/")
-    ? normalized.slice("resources/".length)
-    : normalized;
-
-  // When the base still points at the transitional monorepo, keep the full
-  // path so files continue to resolve correctly until the split is complete.
-  const effectivePath = getRawGithubRepository(publicRepoBaseUrl) === sourceRepository
-    ? normalized
-    : strippedPath;
-
-  return `${publicRepoBaseUrl}/${effectivePath}`;
+  return `${publicRepoBaseUrl}/${normalized}`;
 }
 
 async function main() {
