@@ -1,6 +1,14 @@
 {
-  "generatedAt": "2026-08-10T12:13:29.986Z",
+  "generatedAt": "2026-08-10T19:48:57.439Z",
   "blog": [
+    {
+      "title": "Serie · Construir mejor, no solo más rápido",
+      "url": "https://www.linkedin.com/pulse/serie-construir-mejor-solo-m%C3%A1s-r%C3%A1pido-jonathan-manrique-5zqqf/",
+      "date": "2026-08-10",
+      "summary": "Artículo publicado en LinkedIn por Jonathan Manrique Ríos sobre como podemos usar la IA para ayudarnos en el proceso de construcción de soluciones, en este caso enfocado a Power Platform.",
+      "slug": "2026-08-10-Serie-Construir-mejor,-no-solo-más-rápido",
+      "source": "blog/2026-08-10-Serie-Construir-mejor,-no-solo-más-rápido.md"
+    },
     {
       "title": "La IA entra en era del coste consciente",
       "url": "https://www.linkedin.com/pulse/la-ia-entra-en-era-del-coste-consciente-jonathan-manrique-3llnf/",
@@ -8,14 +16,6 @@
       "summary": "Artículo publicado en LinkedIn por Jonathan Manrique Ríos sobre eficiencia de coste en iniciativas de IA. Nota: desde este entorno no fue posible verificar automáticamente metadatos adicionales del artículo por restricciones de conectividad externa.",
       "slug": "2026-08-09-la-ia-era-del-coste-consciente",
       "source": "blog/2026-08-09-la-ia-era-del-coste-consciente.md"
-    },
-      {
-      "title": "Serie · Construir mejor, no solo más rápido",
-      "url": "https://www.linkedin.com/pulse/serie-construir-mejor-solo-m%C3%A1s-r%C3%A1pido-jonathan-manrique-5zqqf/",
-      "date": "2026-08-10",
-      "summary": "Artículo publicado en LinkedIn por Jonathan Manrique Ríos sobre como podemos usar la IA para ayudarnos en el proceso de construcción de soluciones, en este caso enfocado a Power Platform.",
-      "slug": "2026-08-10-Serie-Construir-mejor,-no-solo-más-rápido",
-      "source": "blog/2026-08-10-Serie-Construir-mejor,-no-solo-más-rápido.md"
     }
   ],
   "videos": [
