@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-09T17:07:20.640Z",
+  "generatedAt": "2026-08-10T20:04:57.816Z",
   "owner": "jmanriquerios1",
   "totalResources": 1,
   "categories": [
@@ -49,9 +49,9 @@
         "React",
         "Fluent UI"
       ],
-      "repositoryUrl": "https://github.com/jmanriquerios1/power-platform-public-resources/tree/main/pcf/pcf-choice-color-tiles",
-      "documentationUrl": "https://raw.githubusercontent.com/jmanriquerios1/power-platform-public-resources/main/pcf/pcf-choice-color-tiles/README.md",
-      "imageUrl": "https://raw.githubusercontent.com/jmanriquerios1/power-platform-public-resources/main/pcf/pcf-choice-color-tiles/image.png",
+      "repositoryUrl": "https://github.com/jmanriquerios1/power-platform-resources/tree/main/resources/pcf/pcf-choice-color-tiles",
+      "documentationUrl": "https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main/resources/pcf/pcf-choice-color-tiles/README.md",
+      "imageUrl": "https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main/resources/pcf/pcf-choice-color-tiles/image.png",
       "release": null,
       "stars": 0,
       "updatedAt": null,

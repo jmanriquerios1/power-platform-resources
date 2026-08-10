@@ -22,9 +22,7 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
-env:
-  PUBLIC_RESOURCES_REPO: jmanriquerios1/power-platform-public-resources
-  PUBLIC_RESOURCES_BRANCH: main
+env: {}
 
 jobs:
   build:
@@ -39,42 +37,16 @@ jobs:
         with:
           node-version: 22
 
-      # ── Fetch resources catalog from the public repo ──────────────────────
-      #
-      # This step downloads the pre-generated resources.json from the public
-      # resources repository so the web site can display resource cards without
-      # needing the source files locally.
-      #
-      # Two strategies are supported:
-      #   1. Raw GitHub URL (default, works for public repos, no token needed).
-      #   2. Authenticated API call (set RESOURCES_REPO_TOKEN for private repos).
-      #
-      - name: Fetch resources catalog from public repo
+      # ── Generate resources catalog locally ───────────────────────────────
+      - name: Generate resources catalog
         env:
-          RESOURCES_REPO_TOKEN: ${{ secrets.RESOURCES_REPO_TOKEN }}
-        run: |
-          CATALOG_URL="https://raw.githubusercontent.com/${PUBLIC_RESOURCES_REPO}/${PUBLIC_RESOURCES_BRANCH}/assets/data/resources.json"
+          RESOURCES_REPOSITORY: "jmanriquerios1/power-platform-resources"
+        run: node scripts/generate-resources-json.mjs
 
-          if [ -n "${RESOURCES_REPO_TOKEN}" ]; then
-            echo "Downloading catalog with authentication..."
-            curl -fsSL \
-              -H "Authorization: ******" \
-              -H "Accept: application/vnd.github.raw" \
-              -o assets/data/resources.json \
-              "${CATALOG_URL}" \
-            || echo "Remote catalog unavailable (authenticated); using local fallback."
-          else
-            echo "Downloading catalog without authentication (public repo)..."
-            curl -fsSL -o assets/data/resources.json "${CATALOG_URL}" \
-            || echo "Remote catalog unavailable; using local fallback."
-          fi
-
-          echo "Catalog in use:"
-          node -e "
-            const d = require('./assets/data/resources.json');
-            console.log('  resources:', d.resources?.length ?? 0);
-            console.log('  generatedAt:', d.generatedAt ?? 'unknown');
-          "
+      - name: Rewrite catalog URLs to absolute references
+        env:
+          PUBLIC_REPO_BASE_URL: "https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main"
+        run: node scripts/rewrite-catalog-urls.mjs
 
       # ── Build content index (blog + videos) ───────────────────────────────
       - name: Sync YouTube videos

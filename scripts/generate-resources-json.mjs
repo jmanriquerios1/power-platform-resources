@@ -15,12 +15,9 @@ const outputPath = path.resolve(
 const repositoryName = (
   process.env.RESOURCES_REPOSITORY ||
   process.env.GITHUB_REPOSITORY ||
-  "jmanriquerios1/power-platform-public-resources"
-);
-const sourceRepositoryName = (
-  process.env.SOURCE_REPOSITORY ||
   "jmanriquerios1/power-platform-resources"
-).toLowerCase();
+);
+const sourceRepositoryName = repositoryName.toLowerCase();
 const repositoryOwner = repositoryName.split("/")[0] || "jmanriquerios1";
 const defaultBranch = process.env.RESOURCES_REPOSITORY_BRANCH || "main";
 const githubRepositoryUrl = `https://github.com/${repositoryName}`;
@@ -70,15 +67,7 @@ function toPosixPath(value) {
 }
 
 function toRepositoryRelativePath(relativePath) {
-  const normalized = toPosixPath(relativePath);
-
-  if (repositoryName.toLowerCase() === sourceRepositoryName) {
-    return normalized;
-  }
-
-  return normalized.startsWith("resources/")
-    ? normalized.slice("resources/".length)
-    : normalized;
+  return toPosixPath(relativePath);
 }
 
 async function pathExists(targetPath) {

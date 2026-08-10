@@ -31,53 +31,13 @@ jobs:
 
       - name: Generate resources catalog
         env:
-          RESOURCES_REPOSITORY: "jmanriquerios1/power-platform-public-resources"
-          # Override RESOURCES_ROOT to point at a different directory when this
-          # script runs in the separated public resources repo (where resources
-          # may live at the repo root instead of under resources/). Leave unset
-          # to use the default (resources/ subfolder of the current repo).
-          RESOURCES_ROOT: ""
+          RESOURCES_REPOSITORY: "jmanriquerios1/power-platform-resources"
         run: node scripts/generate-resources-json.mjs
 
       - name: Rewrite catalog URLs to absolute references
         env:
-          # Base URL for documentation and image links in the generated catalog.
-          # Phase 3 default: point to the separated public resources repository
-          # so the web site can resolve them without local files.
-          PUBLIC_REPO_BASE_URL: "https://raw.githubusercontent.com/jmanriquerios1/power-platform-public-resources/main"
+          PUBLIC_REPO_BASE_URL: "https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main"
         run: node scripts/rewrite-catalog-urls.mjs
-
-      - name: Warn when public repo sync token is missing
-        if: ${{ secrets.PUBLIC_RESOURCES_REPO_SYNC_TOKEN == '' }}
-        run: echo "::warning::PUBLIC_RESOURCES_REPO_SYNC_TOKEN is not configured; skipping public catalog sync."
-
-      - name: Checkout public resources repository
-        if: ${{ secrets.PUBLIC_RESOURCES_REPO_SYNC_TOKEN != '' }}
-        uses: actions/checkout@v4
-        with:
-          repository: jmanriquerios1/power-platform-public-resources
-          ref: main
-          path: public-resources
-          token: ${{ secrets.PUBLIC_RESOURCES_REPO_SYNC_TOKEN }}
-
-      - name: Sync catalog to public resources repository
-        if: ${{ secrets.PUBLIC_RESOURCES_REPO_SYNC_TOKEN != '' }}
-        run: |
-          mkdir -p public-resources/assets/data
-          cp assets/data/resources.json public-resources/assets/data/resources.json
-
-          cd public-resources
-
-          if git diff --quiet -- assets/data/resources.json; then
-            echo "Public catalog is already up to date."
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/data/resources.json
-          git commit -m "chore: sync resources catalog"
-          git push
 
       - name: Commit updated catalog
         run: |
