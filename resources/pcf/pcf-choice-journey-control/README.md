@@ -1093,11 +1093,11 @@ Puede utilizarse para clasificaciones genéricas como:
 
 ## Capturas
 
-```text
-assets/pcfchoicejourneycontrolImagen1.png
-assets/pcfchoicejourneycontrolImagen2.png
-assets/pcfchoicejourneycontrol.gif
-```
+
+![Vista previa](assets/pcfchoicejourneycontrolImagen1.png)
+![Vista previa](assets/pcfchoicejourneycontrolImagen2.png)
+![Vista previa](assets/pcfchoicejourneycontrol.gif)
+
 
 ---
 
