@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="ITSupport.Controls" constructor="ChoiceJourneyControl" version="0.1.0" display-name-key="Choice Journey Control" description-key="Journey style choice selector for Dataverse option sets" control-type="virtual">
+    <external-service-usage enabled="false" />
+    <property name="selectedChoice" display-name-key="Selected Choice" description-key="Bound Choice / OptionSet field value" of-type="OptionSet" usage="bound" required="true" />
+    <property name="journeyTitle" display-name-key="Journey title" description-key="Optional title shown above the steps" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="journeyDescription" display-name-key="Journey description" description-key="Optional subtitle or helper text" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="accentColor" display-name-key="Accent color" description-key="Hex color for active steps" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="completedColor" display-name-key="Completed color" description-key="Hex color for completed steps" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="pendingColor" display-name-key="Pending color" description-key="Hex color for pending steps" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="showStepNumbers" display-name-key="Show step numbers" description-key="Show numeric markers on steps" of-type="TwoOptions" usage="input" required="false" />
+    <property name="showJourneySummary" display-name-key="Show journey summary" description-key="Display a compact summary below the control" of-type="TwoOptions" usage="input" required="false" />
+    <property name="allowClear" display-name-key="Allow clear" description-key="Allow clearing the selected value when the field is optional" of-type="TwoOptions" usage="input" required="false" />
+    <resources>
+      <code path="index.ts" order="1" />
+      <platform-library name="React" version="16.14.0" />
+      <css path="styles/ChoiceJourneyControl.css" order="1" />
+    </resources>
+  </control>
+</manifest>
