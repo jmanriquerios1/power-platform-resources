@@ -1095,7 +1095,11 @@ Puede utilizarse para clasificaciones genéricas como:
 
 
 ![Vista previa](assets/pcfchoicejourneycontrolImagen1.png)
+
+
 ![Vista previa](assets/pcfchoicejourneycontrolImagen2.png)
+
+
 ![Vista previa](assets/pcfchoicejourneycontrol.gif)
 
 
