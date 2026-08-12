@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T14:23:14.791Z",
+  "generatedAt": "2026-08-12T14:32:48.978Z",
   "owner": "jmanriquerios1",
   "totalResources": 2,
   "categories": [
@@ -39,12 +39,13 @@
       "id": "pcf-pcf-choice-color-tiles",
       "slug": "pcf-choice-color-tiles",
       "title": "Choice Color Tiles",
-      "description": "Componente PCF genérico para representar opciones mediante tarjetas de color, sin dependencias de nombres de campos o esquemas de entorno.",
+      "description": "Componente PCF genérico para representar opciones de Dataverse mediante tarjetas visuales de color, ofreciendo una experiencia de selección más clara, moderna y fácil de interpretar para usuarios finales.",
       "category": "PCF Controls",
       "categoryKey": "pcf",
       "tags": [
         "Power Platform",
         "Dataverse",
+        "Power Apps Component Framework",
         "TypeScript",
         "React",
         "Fluent UI"
