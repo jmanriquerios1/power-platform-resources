@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-08-12T06:30:53.395Z",
+  "generatedAt": "2026-08-12T14:23:14.791Z",
   "owner": "jmanriquerios1",
-  "totalResources": 1,
+  "totalResources": 2,
   "categories": [
     {
       "key": "pcf",
       "label": "PCF Controls",
       "route": "pcf",
-      "resourceCount": 1
+      "resourceCount": 2
     },
     {
       "key": "code-apps",
@@ -52,6 +52,34 @@
       "repositoryUrl": "https://github.com/jmanriquerios1/power-platform-resources/tree/main/resources/pcf/pcf-choice-color-tiles",
       "documentationUrl": "https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main/resources/pcf/pcf-choice-color-tiles/README.md",
       "imageUrl": "https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main/resources/pcf/pcf-choice-color-tiles/image.png",
+      "release": null,
+      "stars": 0,
+      "updatedAt": null,
+      "language": "TypeScript"
+    },
+    {
+      "id": "pcf-pcf-choice-journey-control",
+      "slug": "pcf-choice-journey-control",
+      "title": "Choice Journey Control",
+      "description": "Componente PCF universal para transformar un campo Dataverse de tipo Choice u OptionSet en una experiencia visual de recorrido, progreso y selección de estado.",
+      "category": "PCF Controls",
+      "categoryKey": "pcf",
+      "tags": [
+        "Power Platform",
+        "Dataverse",
+        "Power Apps Component Framework",
+        "TypeScript",
+        "React",
+        "Fluent UI",
+        "CSS Tokens",
+        "RESX Resources",
+        "Jest",
+        "Testing Library",
+        "Power Platform CLI"
+      ],
+      "repositoryUrl": "https://github.com/jmanriquerios1/power-platform-resources/tree/main/resources/pcf/pcf-choice-journey-control",
+      "documentationUrl": "https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main/resources/pcf/pcf-choice-journey-control/README.md",
+      "imageUrl": "",
       "release": null,
       "stars": 0,
       "updatedAt": null,
