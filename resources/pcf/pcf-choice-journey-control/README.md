@@ -1094,12 +1094,9 @@ Puede utilizarse para clasificaciones genéricas como:
 ## Capturas
 
 ```text
-assets/ChoiceJourneyControlLight.png
-assets/ChoiceJourneyControlDark.png
-assets/ChoiceJourneyControlCompact.png
-assets/ChoiceJourneyControlVertical.png
-assets/ChoiceJourneyControlReadOnly.png
-assets/ChoiceJourneyControl.gif
+assets/pcfchoicejourneycontrolImagen1.png
+assets/pcfchoicejourneycontrolImagen2.png
+assets/pcfchoicejourneycontrol.gif
 ```
 
 ---
