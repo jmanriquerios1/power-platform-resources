@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-08-17T06:12:33.911Z",
+  "generatedAt": "2026-08-17T18:34:08.372Z",
   "owner": "jmanriquerios1",
-  "totalResources": 2,
+  "totalResources": 3,
   "categories": [
     {
       "key": "pcf",
       "label": "PCF Controls",
       "route": "pcf",
-      "resourceCount": 2
+      "resourceCount": 3
     },
     {
       "key": "code-apps",
@@ -85,6 +85,29 @@
       "stars": 0,
       "updatedAt": null,
       "language": "TypeScript"
+    },
+    {
+      "id": "pcf-pcf-status-journey-control",
+      "slug": "pcf-status-journey-control",
+      "title": "Generic Choice Journey Control",
+      "description": "Componente PCF estándar para transformar cualquier columna Dataverse de tipo Choice u OptionSet en una experiencia visual de recorrido, progreso y selección de estado.",
+      "category": "PCF Controls",
+      "categoryKey": "pcf",
+      "tags": [
+        "Power Platform y Dataverse",
+        "Power Apps Component Framework",
+        "TypeScript y React",
+        "CSS",
+        "Jest",
+        "Power Platform CLI"
+      ],
+      "repositoryUrl": "https://github.com/jmanriquerios1/power-platform-resources/tree/main/resources/pcf/pcf-status-journey-control",
+      "documentationUrl": "https://raw.githubusercontent.com/jmanriquerios1/power-platform-resources/main/resources/pcf/pcf-status-journey-control/README.md",
+      "imageUrl": "",
+      "release": null,
+      "stars": 0,
+      "updatedAt": null,
+      "language": "CSS"
     }
   ]
 }
