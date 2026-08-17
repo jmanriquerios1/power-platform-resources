@@ -1,13 +1,29 @@
 {
-  "generatedAt": "2026-08-17T12:04:39.747Z",
+  "generatedAt": "2026-08-17T15:59:23.245Z",
   "blog": [
+    {
+      "title": "El mejor prompt no es una frase. Es un buen requerimiento",
+      "url": "https://www.linkedin.com/pulse/el-mejor-prompt-es-una-frase-un-buen-requerimiento-jonathan-manrique-ibdzf",
+      "date": "2026-08-18",
+      "summary": "Descubre por qué los requerimientos son más importantes que los prompts al construir soluciones empresariales con Copilot, Power Platform, Dataverse e IA.",
+      "slug": "2026-08-18-post-02-el-mejor-prompt-no-es-una-frase-es-un-buen-requerimiento.md copy",
+      "source": "blog/2026-08-18-post-02-el-mejor-prompt-no-es-una-frase-es-un-buen-requerimiento.md copy.md"
+    },
+    {
+      "title": "La IA acelera. La metodología decide la calidad",
+      "url": "https://www.linkedin.com/pulse/la-ia-acelera-metodolog%25C3%25ADa-decide-calidad-jonathan-manrique-aonqf/",
+      "date": "2026-08-18",
+      "summary": "Descubre por qué los mejores resultados con Copilot, Power Platform y la IA no nacen de prompts ingeniosos, sino de requerimientos claros, verificables y alineados con la arquitectura, las reglas de negocio y los criterios de aceptación.",
+      "slug": "2026-08-13-post-02-el-mejor-prompt-no-es-una-frase-es-un-buen-requerimiento.md",
+      "source": "blog/2026-08-13-post-02-el-mejor-prompt-no-es-una-frase-es-un-buen-requerimiento.md.md"
+    },
     {
       "title": "Serie · Construir mejor, no solo más rápido",
       "url": "https://www.linkedin.com/pulse/serie-construir-mejor-solo-m%C3%A1s-r%C3%A1pido-jonathan-manrique-5zqqf/",
       "date": "2026-08-10",
       "summary": "Artículo publicado en LinkedIn por Jonathan Manrique Ríos sobre como podemos usar la IA para ayudarnos en el proceso de construcción de soluciones, en este caso enfocado a Power Platform.",
-      "slug": "2026-08-10-Serie-Construir-mejor,-no-solo-más-rápido",
-      "source": "blog/2026-08-10-Serie-Construir-mejor,-no-solo-más-rápido.md"
+      "slug": "2026-08-10-Serie-Construir-mejor,-no-solo-más-rápido copy",
+      "source": "blog/2026-08-10-Serie-Construir-mejor,-no-solo-más-rápido copy.md"
     },
     {
       "title": "La IA entra en era del coste consciente",
