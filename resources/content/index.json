@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-03T00:06:32.487Z",
+  "generatedAt": "2026-09-03T12:04:01.009Z",
   "blog": [
     {
       "title": "El mejor prompt no es una frase. Es un buen requerimiento",
@@ -132,10 +132,18 @@
       "source": "videos/2025-09-14-Kt9zFsFaoLs.md"
     },
     {
+      "title": "MCP Buscar correos y enviar correo",
+      "url": "https://www.youtube.com/watch?v=MVPxbb3aYoE",
+      "date": "2025-09-14",
+      "summary": "Sin resumen disponible.",
+      "slug": "2025-09-14-MVPxbb3aYoE",
+      "source": "videos/2025-09-14-MVPxbb3aYoE.md"
+    },
+    {
       "title": "MCP Buscar reuniones",
       "url": "https://www.youtube.com/watch?v=27wljLr4PUE",
       "date": "2025-09-14",
-      "summary": "Sin resumen disponible en el feed RSS público de YouTube.",
+      "summary": "Sin resumen disponible.",
       "slug": "2025-09-14-27wljLr4PUE",
       "source": "videos/2025-09-14-27wljLr4PUE.md"
     },
@@ -143,7 +151,7 @@
       "title": "MCP Calendario Agendar reuniones",
       "url": "https://www.youtube.com/watch?v=4x50W2aJdyw",
       "date": "2025-09-14",
-      "summary": "Sin resumen disponible en el feed RSS público de YouTube.",
+      "summary": "Sin resumen disponible.",
       "slug": "2025-09-14-4x50W2aJdyw",
       "source": "videos/2025-09-14-4x50W2aJdyw.md"
     },
@@ -151,9 +159,41 @@
       "title": "MCP Contactos agregar Contactos",
       "url": "https://www.youtube.com/watch?v=rA_A8fx-XMs",
       "date": "2025-09-14",
-      "summary": "Sin resumen disponible en el feed RSS público de YouTube.",
+      "summary": "Sin resumen disponible.",
       "slug": "2025-09-14-rA_A8fx-XMs",
       "source": "videos/2025-09-14-rA_A8fx-XMs.md"
+    },
+    {
+      "title": "Extracción de Datos PDF",
+      "url": "https://www.youtube.com/watch?v=tjSrNMSIsWM",
+      "date": "2025-04-21",
+      "summary": "El uso de IA HUB de AI Builder + Copilot Studio nos permite procesar PDF",
+      "slug": "2025-04-21-tjSrNMSIsWM",
+      "source": "videos/2025-04-21-tjSrNMSIsWM.md"
+    },
+    {
+      "title": "Plan Designer",
+      "url": "https://www.youtube.com/watch?v=O0gB2KKBUyg",
+      "date": "2025-03-09",
+      "summary": "🚀 Plan Designer de Power Platform: ¡La Nueva Herramienta para Crear Aplicaciones Sin Código! 🔥 ¿Sabías que ahora puedes diseñar procesos de negocio sin escribir código en Power Platform? En este video, exploramos el Plan Designer, la herramienta que te permite estructurar y automatizar flujos de trabajo de manera visual y sencilla dentro de Dataverse.",
+      "slug": "2025-03-09-O0gB2KKBUyg",
+      "source": "videos/2025-03-09-O0gB2KKBUyg.md"
+    },
+    {
+      "title": "Agentes Capitulo1",
+      "url": "https://www.youtube.com/watch?v=p4S3VDRmH3Y",
+      "date": "2025-01-27",
+      "summary": "🚀 Descubre cómo Microsoft Copilot está revolucionando la forma de trabajar con inteligencia artificial. En esta lista de reproducción encontrarás contenido especialmente diseñado para usuarios de negocio que quieren aprender a aprovechar todo el potencial de esta herramienta de IA generativa integrada en Microsoft 365 y Power Platform.",
+      "slug": "2025-01-27-p4S3VDRmH3Y",
+      "source": "videos/2025-01-27-p4S3VDRmH3Y.md"
+    },
+    {
+      "title": "Copilot Studio + Dataverse",
+      "url": "https://www.youtube.com/watch?v=dAtVhU2XrKI",
+      "date": "2024-08-01",
+      "summary": "En este video, te llevamos a un emocionante recorrido por Copilot Studio y su integración con Dataverse. Descubre cómo esta poderosa combinación puede transformar la forma en que gestionas y analizas datos en tu organización.",
+      "slug": "2024-08-01-dAtVhU2XrKI",
+      "source": "videos/2024-08-01-dAtVhU2XrKI.md"
     }
   ]
 }
