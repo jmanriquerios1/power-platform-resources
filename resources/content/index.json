@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-03T12:04:01.009Z",
+  "generatedAt": "2026-09-04T00:06:01.595Z",
   "blog": [
     {
       "title": "El mejor prompt no es una frase. Es un buen requerimiento",
@@ -143,7 +143,7 @@
       "title": "MCP Buscar reuniones",
       "url": "https://www.youtube.com/watch?v=27wljLr4PUE",
       "date": "2025-09-14",
-      "summary": "Sin resumen disponible.",
+      "summary": "Sin resumen disponible en el feed RSS público de YouTube.",
       "slug": "2025-09-14-27wljLr4PUE",
       "source": "videos/2025-09-14-27wljLr4PUE.md"
     },
@@ -151,7 +151,7 @@
       "title": "MCP Calendario Agendar reuniones",
       "url": "https://www.youtube.com/watch?v=4x50W2aJdyw",
       "date": "2025-09-14",
-      "summary": "Sin resumen disponible.",
+      "summary": "Sin resumen disponible en el feed RSS público de YouTube.",
       "slug": "2025-09-14-4x50W2aJdyw",
       "source": "videos/2025-09-14-4x50W2aJdyw.md"
     },
@@ -159,7 +159,7 @@
       "title": "MCP Contactos agregar Contactos",
       "url": "https://www.youtube.com/watch?v=rA_A8fx-XMs",
       "date": "2025-09-14",
-      "summary": "Sin resumen disponible.",
+      "summary": "Sin resumen disponible en el feed RSS público de YouTube.",
       "slug": "2025-09-14-rA_A8fx-XMs",
       "source": "videos/2025-09-14-rA_A8fx-XMs.md"
     },
